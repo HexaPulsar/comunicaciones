@@ -4,16 +4,36 @@ import sys
 import http.server
 
 #inicio codigo cliente
-#loopback
+#loopback server
 
 host = '127.0.0.1'
 port = 8000
 
-s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-print("socket is established")
-#the public ip
-host = '127.0.0.1'
-port = 8000
-s.connect((host,port))
 
-print("s.connect done")
+def iniciarsocket():
+    global s
+    s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    print("socket is established")
+
+def conectar():
+    
+    
+    #the public ip
+    s.connect((host,port))
+
+    
+def desconectar():
+    s.close()
+
+
+def enviarmensaje():
+    mensaje = input("message to send:")
+    s.sendall(bytes(mensaje, 'utf-8')) 
+
+
+    
+#run functions
+iniciarsocket()
+conectar()
+enviarmensaje()
+desconectar()
