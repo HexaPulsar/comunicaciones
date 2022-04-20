@@ -1,0 +1,5 @@
+20/04: montar servidor con loopback
+usando stackoverflow https://stackoverflow.com/questions/43330897/oserror-winerror-10022-an-invalid-argument-was-supplied-windows-10-python
+
+siguiente paso: 
+probar conexion, comenzar con funciones de cliente
