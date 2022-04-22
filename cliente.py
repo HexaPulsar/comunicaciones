@@ -17,12 +17,15 @@ def check_echo(e,r):
 def iniciarsocket():
     global s
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
-        s.connect((host,port)) 
-        mensaje = input("message to send:")
-        s.sendall(bytes(mensaje, 'utf-8')) 
-        data = s.recv(1024)
-        check_echo(mensaje,data)
+        s.connect((host,port))
+        mensaje = None
+        while mensaje != "--salir":
+            mensaje = input("message to send:")
+            s.sendall(bytes(mensaje, 'utf-8')) 
+            data = s.recv(1024)
+            check_echo(mensaje,data)
         #print(f"Received {data!r}") 
         
 #run functions
-iniciarsocket()   
+iniciarsocket()
+   

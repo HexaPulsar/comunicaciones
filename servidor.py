@@ -20,10 +20,11 @@ def iniciarservidor():
             print(f"Connected by {addr}")
             while True:
                 data = conn.recv(1024)
+                print(data.decode('utf-8'))
                 if not data:
                     break
                 conn.sendall(data)
+                
 
-        print("waiting for connection")
-    
+    ###RUN###
 iniciarservidor()
