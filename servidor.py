@@ -2,11 +2,9 @@ import socket
 from funcionalidad import *
 from clases import *
 #inicio codigo servidor
-dic = {204443092:Cliente("magdalena de la fuente","20.444.309-2")}
  
 host = '127.0.0.1'
 port = 8000
-
 
     
 
@@ -23,16 +21,22 @@ def iniciarservidor():
         with conn:
             print(f"Connected by {addr}")
             while True:
-                conn.sendall("Hola! Bienvenido, Ingrese su RUT")#bienvenida
+                conn.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))#bienvenida
                 data = conn.recv(1024)
-                #print(data.decode('utf-8'))
+                print(data.decode('utf-8'))
                 if not data:
                     break
                 conn.sendall(data)
-                def verificar(data):
+                def verificar(datas):
                     #revisa si el rut de la persona esta en la base
-                    if data in dic:
-                        ayuda(dic(data))
 
+                    ###arreglar data###
+                    if int(datas) in dic:
+                        ayuda(dic[str(datas)])
+                    else:
+                        print("usted no es cliente")
+                       
+                verificar(data)
+                ####
     ###RUN###
 iniciarservidor()

@@ -20,6 +20,7 @@ def iniciarsocket():
         s.connect((host,port))
         mensaje = None
         while mensaje != "--salir":
+            print(s.recv(1024))
             mensaje = input("message to send:")
             s.sendall(bytes(mensaje, 'utf-8')) 
             data = s.recv(1024)
@@ -28,4 +29,3 @@ def iniciarsocket():
         
 #run functions
 iniciarsocket()
-   
