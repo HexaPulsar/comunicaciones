@@ -12,7 +12,8 @@ def iniciarservidor():
         s.bind((host,port))
         #a la espera
         print("iniciando servidor...")
-        s.listen()
+        s.listen() #makes socket a listening socket
+        print("Waiting for connection...")
         conn, addr = s.accept()
 
         with conn:
