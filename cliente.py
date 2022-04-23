@@ -33,26 +33,7 @@ def iniciarsocket():
     while True:
         message = input()
         s.sendall(str.encode(message))
-    receiveThread.join()
-
+    
 
 #run functions
 iniciarsocket()
-def ignore():
-    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
-        s.connect((host,port)) #se conecta al servidor
-        mensaje = "init"
-        
-        while True:
-            
-            data = s.recv(1024) #lee
-            
-            if mensaje == data:
-                data = s.recv(1024)
-            print(data.decode('utf-8')) #printea
-            if not data:
-                break
-            mensaje = input(' ') #ingreso de datos cliente
-            s.sendall(bytes(mensaje, 'utf-8')) #envio a servidor
-            assert mensaje.encode('utf-8') == s.recv(1024)
-            #s.recv(1024) #lectura de echo del servidor (por ser TCP siempre se reenvia la info al cliente)
