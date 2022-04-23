@@ -3,15 +3,21 @@ from clases import *
 
 #datos para la base de datos
 ejecutivo = "jesus christ"
-dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2",historial=[])}
-print(dic['204443092'].historial)
+dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2")}
+#print(dic['204443092'].historial)
+
+
 #este modulo tendrá las funciones con las que interactua el cliente 
 
 
 
-def revisar_atenciones(conn):
-    conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n",'utf-8'))
-    print('uno!')
+def revisar_atenciones(conn,cliente): 
+    if cliente.solicitudes == []:
+        conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n \n Usted no tiene solicitudes previas" + '\n', 'utf-8'))
+    else:
+        envio = cliente.solicitudes
+        conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n" + str(envio) + '\n' , 'utf-8'))
+    
 
 def reiniciar_servicios(conn):
     conn.sendall(bytes("hey!",'utf-8'))
@@ -25,10 +31,10 @@ def contactar_ejecutivo(conn):
 def salir(conn,s): 
     conn.sendall(bytes("Gracias por contactarnos, que tenga un buen día!",'utf-8'))
     #s.shutdown()
-    s.close()
+    s.close() 
     
 def ayuda(cliente,conn,s): #display de ayudas
-     
+    
     print('[SERVER]: ' + cliente.nombre + " conectado")
 
 
@@ -42,10 +48,12 @@ def ayuda(cliente,conn,s): #display de ayudas
     #escuchar numero
     num = int(conn.recv(1024).decode('utf-8'))
     
-    while num != 4:
+    conn.sendall(bytes(str(num), 'utf-8'))
 
+
+    while num != 4:
         if num == 1: 
-            revisar_atenciones(conn)
+            revisar_atenciones(conn,cliente)
         if num == 2:
             reiniciar_servicios(conn)
             print('[SERVER]:' + "Reinicio Servicios Cliente " + \
@@ -54,7 +62,7 @@ def ayuda(cliente,conn,s): #display de ayudas
             contactar_ejecutivo(conn)
             print('[SERVER]:' + ' Cliente ' + cliente.nombre + \
                 ' redirijido a ejecutivo ' + ejecutivo + '.')
-    
+
         #loop de pregunta
         conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
         ", en qué más te podemos ayudar? \n \
@@ -64,6 +72,7 @@ def ayuda(cliente,conn,s): #display de ayudas
         (4) Salir",'utf-8'))
 
         num = int(conn.recv(1024).decode('utf-8'))
+        s.sendall(bytes(str(num),'utf-8'))
     salir(conn,s)
     print('[SERVER]: ' + cliente.nombre + " descontectado.")
         

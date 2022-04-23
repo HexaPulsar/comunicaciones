@@ -1,6 +1,7 @@
 import socket 
 from funcionalidad import *
 from clases import *
+import threading
 #inicio codigo servidor
  
 host = '127.0.0.1'
@@ -29,6 +30,7 @@ def iniciarservidor():
                 def verificar(datas,conn):#verifica que el rut este en la base de datos
                     datas = datas.decode('utf-8')
                     if str(datas) in dic.keys():
+                        print(dic[str(datas)])
                         ayuda(dic[str(datas)],conn,s) #inicializa el app
                     else:
                         conn.sendall(bytes("Usted no es cliente,increse un rut válido", 'utf-8'))
