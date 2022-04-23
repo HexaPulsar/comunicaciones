@@ -6,7 +6,7 @@ from clases import *
 host = '127.0.0.1'
 port = 8000
 
-    
+
 
 def iniciarservidor():
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
@@ -20,23 +20,21 @@ def iniciarservidor():
 
         with conn:
             print(f"Connected by {addr}")
+            conn.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))#bienvenida
             while True:
-                conn.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))#bienvenida
-                data = conn.recv(1024)
-                print(data.decode('utf-8'))
+                data = conn.recv(1024) # recibe data
                 if not data:
-                    break
-                conn.sendall(data)
-                def verificar(datas):
-                    #revisa si el rut de la persona esta en la base
-
-                    ###arreglar data###
-                    if int(datas) in dic:
-                        ayuda(dic[str(datas)])
+                    break #si no hay data, sale del loop
+                conn.sendall(data)# TCP ECHO
+                def verificar(datas,conn):#verifica que el rut este en la base de datos
+                    datas = datas.decode('utf-8')
+                    if str(datas) in dic.keys():
+                        ayuda(dic[str(datas)],conn,s) #inicializa el app
                     else:
-                        print("usted no es cliente")
-                       
-                verificar(data)
+                        conn.sendall(bytes("Usted no es cliente,increse un rut válido", 'utf-8'))
+                        s.close()
+                verificar(data,conn) #verifica que el clientes esta en la base de datos
+
                 ####
     ###RUN###
 iniciarservidor()
