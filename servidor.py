@@ -33,6 +33,7 @@ def iniciarservidor():
                     else:
                         conn.sendall(bytes("Usted no es cliente,increse un rut válido", 'utf-8'))
                         s.close()
+                
                 verificar(data,conn) #verifica que el clientes esta en la base de datos
 
                 ####

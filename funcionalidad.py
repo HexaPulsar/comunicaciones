@@ -3,8 +3,8 @@ from clases import *
 
 #datos para la base de datos
 ejecutivo = "jesus christ"
-dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2")}
- 
+dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2",historial=[])}
+print(dic['204443092'].historial)
 #este modulo tendrá las funciones con las que interactua el cliente 
 
 
@@ -24,7 +24,7 @@ def contactar_ejecutivo(conn):
 
 def salir(conn,s): 
     conn.sendall(bytes("Gracias por contactarnos, que tenga un buen día!",'utf-8'))
-    s.shutdown()
+    #s.shutdown()
     s.close()
     
 def ayuda(cliente,conn,s): #display de ayudas
@@ -54,9 +54,8 @@ def ayuda(cliente,conn,s): #display de ayudas
             contactar_ejecutivo(conn)
             print('[SERVER]:' + ' Cliente ' + cliente.nombre + \
                 ' redirijido a ejecutivo ' + ejecutivo + '.')
-           
-
-
+    
+        #loop de pregunta
         conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
         ", en qué más te podemos ayudar? \n \
         (1) Revisar atenciones anteriores\n \
