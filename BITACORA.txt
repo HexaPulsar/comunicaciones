@@ -6,3 +6,4 @@
 wea donde esta el server cliente que sacque de internet 
 
 https://github.com/pricheal/python-client-server/blob/master/client.py
+
