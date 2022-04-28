@@ -8,11 +8,7 @@ import sys
 #Variables for holding information about connections
 connections = []
 total_connections = 0
-
-
-def ejecutivo():
-    
-    pass
+ 
 
 
 

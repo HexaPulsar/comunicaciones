@@ -3,7 +3,7 @@ class Cliente:
     #la clase cliente crea un objecto cliente. Tiene un nombre (del cliente) un rut (del cliente)
     # y el nombre del ejecutivo. Cada objecto clase tiene una lista donde se almacenan
     #las solicitudes, que a su vez son objectos de tipo solicitud
-    
+    global solicitudes
     ejecutivo = 'nombre ejecutivo'
     solicitudes = [] #lista que contendra objetos de tipo solicitud
     def __init__(self,nombre,rut,ejecutivo = ''):
@@ -11,10 +11,10 @@ class Cliente:
         self.nombre= nombre
         self.rut = rut
         self.ejecutivo = ejecutivo
-    
-    def solicitudes_anteriores():
+         
+    def solicitudes_anteriores(self):
         global solicitudes
-        return solicitudes
+        print(solicitudes)
  
 
 

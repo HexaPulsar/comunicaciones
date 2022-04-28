@@ -4,7 +4,7 @@ from clases import *
 #datos para la base de datos
 ejecutivo = "jesus christ"
 dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2")}
-#print(dic['204443092'].historial)
+print(dic['204443092'].solicitudes_anteriores())
 
 
 #este modulo tendrá las funciones con las que interactua el cliente 
@@ -22,7 +22,7 @@ def ejecutivo(conn,connections,total_conections):
         ' +  "|::state <>|::subject<>|::history<>|::name<>::restart|::salir|\
             ",'utf-8'))
     
-    comando_ejecutivo = conn.recv(1024).deconde('utf-8')
+    comando_ejecutivo = conn.recv(1024).decode('utf-8')
     
     while comando_ejecutivo != "::salir":
         if "::subject" in comando_ejecutivo:
@@ -39,7 +39,7 @@ def ejecutivo(conn,connections,total_conections):
             pass
         else:
             conn.sendall(bytes("ese no es un comando valido, intente denuevo"))
-        comando_ejecutivo = conn.recv(1024).deconde('utf-8')
+        comando_ejecutivo = conn.recv(1024).decode('utf-8')
 
 
 def revisar_atenciones(conn,cliente): 
@@ -103,7 +103,7 @@ def ayuda(cliente,conn): #display de ayudas
 
     conn.sendall(bytes("Gracias por contactarnos, que tenga un buen día!",'utf-8'))
     print('[SERVER]: ' + cliente.nombre + " descontectado.")
-    return
+    #return
 
 
 
