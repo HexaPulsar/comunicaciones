@@ -11,9 +11,6 @@ total_connections = 0
  
 
 
-
-
-
 #Client class, new instance created for each connected client
 #Each instance has the socket and address that is associated with items
 #Along with an assigned ID and a name chosen by the client
@@ -61,20 +58,20 @@ class Client(threading.Thread):
                         print(dic[str(datas)])
                         self.id = str(datas)  
                         ayuda(dic[str(datas)],self.socket) #inicializa el app
-                        print('retorno!')
+                        return 
                     else:
                         self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido", 'utf-8'))
-            
+
                 autenticar(data)
                 #print("ID " + str(self.id) + ": " + str(data.decode("utf-8")))
                 for client in connections:
                     if client.id != self.id:
                         client.socket.sendall(data)
-                self.socket.close()
+                
 
             if data.decode('utf-8') == "admin":                
                 ejecutivo(self.socket, connections, total_connections)
-
+            self.socket.close()
 
                  
 

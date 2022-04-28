@@ -3,9 +3,12 @@ from clases import *
 
 #datos para la base de datos
 ejecutivo = "jesus christ"
+
+#aqui habrá que implementar mutex 
+
 dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2")}
 print(dic['204443092'].solicitudes_anteriores())
-
+#####
 
 #este modulo tendrá las funciones con las que interactua el cliente 
  
@@ -65,7 +68,7 @@ def contactar_ejecutivo(conn):
 
 
 def ayuda(cliente,conn): #display de ayudas
-    
+    global sock
     print('[SERVER]: ' + cliente.nombre + " conectado")
 
     conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
@@ -100,9 +103,10 @@ def ayuda(cliente,conn): #display de ayudas
         (4) Salir",'utf-8'))
 
         num = int(conn.recv(1024).decode('utf-8'))
-
+  
     conn.sendall(bytes("Gracias por contactarnos, que tenga un buen día!",'utf-8'))
     print('[SERVER]: ' + cliente.nombre + " descontectado.")
+    return 0
     #return
 
 
