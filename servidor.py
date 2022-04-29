@@ -44,7 +44,7 @@ class Client(threading.Thread):
                 data = self.socket.recv(1024)
                   
             except:
-                print("Client " + str(self.address) + " has disconnected")
+                #print("Client " + str(self.id) + " has disconnected")
                 self.signal = False 
                 connections.remove(self)
                 break
@@ -57,7 +57,7 @@ class Client(threading.Thread):
                     if str(datas) in dic.keys():
                         print(dic[str(datas)])
                         self.id = str(datas)  
-                        ayuda(dic[str(datas)],self.socket) #inicializa el app
+                        ayuda(dic[str(datas)],self.socket,self) #inicializa el app
                         return 
                     else:
                         self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido", 'utf-8'))
@@ -70,9 +70,9 @@ class Client(threading.Thread):
                 
 
             if data.decode('utf-8') == "admin":                
-                ejecutivo(self.socket, connections, total_connections)
-            self.socket.close()
-
+                ejecutivo(self.socket, connections, total_connections,self)
+                break
+        return 0
                  
 
 #esta funcion ve que clientes hay online

@@ -7,12 +7,12 @@ ejecutivo = "jesus christ"
 #aqui habrá que implementar mutex 
 
 dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2")}
-print(dic['204443092'].solicitudes_anteriores())
+#print(dic['204443092'].solicitudes_anteriores())
 #####
 
 #este modulo tendrá las funciones con las que interactua el cliente 
  
-def ejecutivo(conn,connections,total_conections):
+def ejecutivo(conn,connections,total_conections,self):
     
     print('[SERVER]: ' + "ejecutivo" + " conectado")
     conn.sendall(bytes('Ahora tienes poderes de admin' + "\n" + "hay " + str(len(connections)-1) + " clientes online" + "\n" \
@@ -27,7 +27,7 @@ def ejecutivo(conn,connections,total_conections):
     
     comando_ejecutivo = conn.recv(1024).decode('utf-8')
     
-    while comando_ejecutivo != "::salir":
+    while comando_ejecutivo:
         if "::subject" in comando_ejecutivo:
             pass
         elif '::state' in comando_ejecutivo:
@@ -39,11 +39,13 @@ def ejecutivo(conn,connections,total_conections):
         elif "::restart" in comando_ejecutivo:
             pass
         elif "::salir" in comando_ejecutivo :
-            pass
+            print("[SERVER]: ejecutivo desconectado")
+            self.socket.close()
+            break
         else:
-            conn.sendall(bytes("ese no es un comando valido, intente denuevo"))
+            conn.sendall(bytes("ese no es un comando valido, intente denuevo", 'utf-8'))
         comando_ejecutivo = conn.recv(1024).decode('utf-8')
-
+    return    
 
 def revisar_atenciones(conn,cliente): 
     if cliente.solicitudes == []:
@@ -67,7 +69,7 @@ def contactar_ejecutivo(conn):
     
 
 
-def ayuda(cliente,conn): #display de ayudas
+def ayuda(cliente,conn,self): #display de ayudas
     global sock
     print('[SERVER]: ' + cliente.nombre + " conectado")
 
@@ -106,6 +108,7 @@ def ayuda(cliente,conn): #display de ayudas
   
     conn.sendall(bytes("Gracias por contactarnos, que tenga un buen día!",'utf-8'))
     print('[SERVER]: ' + cliente.nombre + " descontectado.")
+    self.socket.close()
     return 0
     #return
 
