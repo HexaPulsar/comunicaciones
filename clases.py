@@ -5,16 +5,16 @@ class Cliente:
     #las solicitudes, que a su vez son objectos de tipo solicitud
     global solicitudes
     ejecutivo = 'nombre ejecutivo'
-    solicitudes = [] #lista que contendra objetos de tipo solicitud
+    solicitudes = ['hey','hello','the matrix'] #lista que contendra objetos de tipo solicitud
     def __init__(self,nombre,rut,ejecutivo = ''):
         
         self.nombre= nombre
         self.rut = rut
         self.ejecutivo = ejecutivo
-         
+        
     def solicitudes_anteriores(self):
         global solicitudes
-        print(solicitudes)
+        return solicitudes
  
 
 

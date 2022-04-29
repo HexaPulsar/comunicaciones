@@ -22,7 +22,7 @@ def ejecutivo(conn,connections,total_conections,self):
     
     
     conn.sendall(bytes('existen los siguientes comandos:\n\
-        ' +  "|::state <>|::subject<>|::history<>|::name<>::restart|::salir|\
+        ' +  "|::state <>|::subject<>|::history<>|::name<>|::restart|::salir|\
             ",'utf-8'))
     
     comando_ejecutivo = conn.recv(1024).decode('utf-8')
@@ -42,17 +42,29 @@ def ejecutivo(conn,connections,total_conections,self):
             print("[SERVER]: ejecutivo desconectado")
             self.socket.close()
             break
+        elif "::refresh" in comando_ejecutivo:
+            conn.sendall(bytes("hay " + str(len(connections)-1) + " clientes online" + "\n", 'utf-8'))
         else:
             conn.sendall(bytes("ese no es un comando valido, intente denuevo", 'utf-8'))
         comando_ejecutivo = conn.recv(1024).decode('utf-8')
     return    
 
+
+
+
+
 def revisar_atenciones(conn,cliente): 
-    if cliente.solicitudes == []:
+    if len(cliente.solicitudes_anteriores()) == 0:
         conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n \n Usted no tiene solicitudes previas" + '\n', 'utf-8'))
     else:
-        envio = cliente.solicitudes
-        conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n" + str(envio) + '\n' , 'utf-8'))
+        solicitudes = cliente.solicitudes_anteriores()
+        conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n" , 'utf-8'))
+        cont = 1
+        for i in solicitudes:
+            conn.sendall(bytes(str(cont) + ') ' + str(i) + '\n','utf-8'))
+            cont = cont +1
+        conn.sendall(bytes("\n \n" , 'utf-8'))
+        
     
 
 def reiniciar_servicios(conn,cliente):
@@ -70,9 +82,7 @@ def contactar_ejecutivo(conn):
 
 
 def ayuda(cliente,conn,self): #display de ayudas
-    global sock
     print('[SERVER]: ' + cliente.nombre + " conectado")
-
     conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
         ", en qué te podemos ayudar? \n \
         (1) Revisar atenciones anteriores\n \

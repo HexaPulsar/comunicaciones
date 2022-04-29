@@ -21,8 +21,8 @@ def iniciarsocket():
             data = socket.recv(1024)
             print(str(data.decode("utf-8")))
             if len(data) == 0:
-                print("You have been disconnected from the server")
                 active_thread = False 
+                print("You have been disconnected from the server")
                 break
         return
               

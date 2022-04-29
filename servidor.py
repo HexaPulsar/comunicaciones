@@ -2,13 +2,16 @@ import socket
 from funcionalidad import *
 from clases import *
 import threading
+
+
+
 #inicio codigo servidor
-import sys
+ 
 
 #Variables for holding information about connections
 connections = []
 total_connections = 0
- 
+online = 0 #lleva el conteo de personas que se encuentran online en el momento 
 
 
 #Client class, new instance created for each connected client
@@ -50,19 +53,17 @@ class Client(threading.Thread):
                 break
             
             if data != "" and data.decode("utf-8") != "admin":
-                
-                def autenticar(datas):#verifica que el rut este en la base de datos e inicializa el menu de opciones
-                    datas = datas.decode('utf-8')
-                    print(datas)
-                    if str(datas) in dic.keys():
-                        print(dic[str(datas)])
-                        self.id = str(datas)  
-                        ayuda(dic[str(datas)],self.socket,self) #inicializa el app
-                        return 
-                    else:
-                        self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido", 'utf-8'))
-
-                autenticar(data)
+                datas = datas.decode('utf-8')
+                #print(datas)
+                if str(datas) in dic.keys():
+                    #print(dic[str(datas)])
+                    self.id = str(datas)  
+                    ayuda(dic[str(datas)],self.socket,self) #inicializa el app
+                    return 
+                elif str(datas) == "::salir":
+                    return
+                else:
+                    self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido, ingrese ::salir para salir", 'utf-8'))
                 #print("ID " + str(self.id) + ": " + str(data.decode("utf-8")))
                 for client in connections:
                     if client.id != self.id:
@@ -72,6 +73,8 @@ class Client(threading.Thread):
             if data.decode('utf-8') == "admin":                
                 ejecutivo(self.socket, connections, total_connections,self)
                 break
+        global online
+        online = online -1
         return 0
                  
 
@@ -98,7 +101,7 @@ def newConnections(socket):
 def main():
     #esta funcion hace dos cosas: el main se queda escuchando
     #si recibe un request inicia un thread para servirle
-    
+    global online
     host = '127.0.0.1'
     port = 8000
 
@@ -111,6 +114,6 @@ def main():
     #se crea un objeto thread y se inicializa
     newConnectionsThread = threading.Thread(target = newConnections, args = (sock,))
     newConnectionsThread.start() #inicializa el thread
-    
+    online = online + 1
     
 main()
