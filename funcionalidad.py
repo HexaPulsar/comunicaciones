@@ -12,7 +12,7 @@ dic = {"204443092":Cliente("Magdalena De La Fuente","20.444.309-2")}
 
 #este modulo tendrá las funciones con las que interactua el cliente 
  
-def ejecutivo(conn,connections,total_conections,self):
+def ejecutivo(conn,connections,total_conections,self,esperando_ejecutivo):
     
     print('[SERVER]: ' + "ejecutivo" + " conectado")
     conn.sendall(bytes('Ahora tienes poderes de admin' + "\n" + "hay " + str(len(connections)-1) + " clientes online" + "\n" \
@@ -20,6 +20,17 @@ def ejecutivo(conn,connections,total_conections,self):
     #conn.sendall(bytes('Los siguientes clientes han solicitado conectarse: '))
     
     
+    
+    if len(esperando_ejecutivo) > 0:
+        conn.sendall(bytes('los siguientes clientes han solicitado conectarse','utf-8'))
+        cont = 1
+        for i in esperando_ejecutivo:
+            conn.sendall(bytes(str(cont) + i.nombre + '\n', 'utf-8'))
+            cont = cont +1 
+            conn.sendall(bytes('ingrese el numero de cliente al que se quiere conectar seguido de ::conectar'))
+            num = conn.recv(1024).decode('utf-8')
+            cliente = esperando_ejecutivo[num-1]
+    conn.sendall(bytes('no hay clientes a la espera \n ', 'utf-8'))
     
     conn.sendall(bytes('existen los siguientes comandos:\n\
         ' +  "|::state <>|::subject<>|::history<>|::name<>|::restart|::salir|\
@@ -37,7 +48,7 @@ def ejecutivo(conn,connections,total_conections,self):
         elif "::name" in comando_ejecutivo:
             pass
         elif "::restart" in comando_ejecutivo:
-            pass
+            cliente.restart()
         elif "::salir" in comando_ejecutivo :
             print("[SERVER]: ejecutivo desconectado")
             self.socket.close()
@@ -56,6 +67,7 @@ def ejecutivo(conn,connections,total_conections,self):
 def revisar_atenciones(conn,cliente): 
     if len(cliente.solicitudes_anteriores()) == 0:
         conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n \n Usted no tiene solicitudes previas" + '\n', 'utf-8'))
+        return
     else:
         solicitudes = cliente.solicitudes_anteriores()
         conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n" , 'utf-8'))
@@ -63,8 +75,13 @@ def revisar_atenciones(conn,cliente):
         for i in solicitudes:
             conn.sendall(bytes(str(cont) + ') ' + str(i) + '\n','utf-8'))
             cont = cont +1
-        conn.sendall(bytes("\n \n" , 'utf-8'))
-        
+        conn.sendall(bytes("\n" , 'utf-8'))
+        conn.sendall(bytes('elija una solicitud para saber más', 'utf-8'))
+        solnum = conn.recv(1024)
+        while solnum not in [1,len(solicitudes)]:
+            conn.sendall(bytes('ese número no esta en la lista, elija otro número','utf-8'))
+            solnum = conn.recv(1024)
+        conn.sendall(bytes(str(solicitudes[solnum].subject), 'utf-8'))
     
 
 def reiniciar_servicios(conn,cliente):
@@ -76,9 +93,10 @@ def reiniciar_servicios(conn,cliente):
     return
 
 def contactar_ejecutivo(conn):
-    numero = ejecutivo
-    conn.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(numero)+ " en la fila.",'utf-8'))
+    global esperando_ejecutivo
     
+    conn.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(len(esperando_ejecutivo))+ " en la fila.",'utf-8'))
+    return
 
 
 def ayuda(cliente,conn,self): #display de ayudas
@@ -105,6 +123,7 @@ def ayuda(cliente,conn,self): #display de ayudas
             contactar_ejecutivo(conn)
             print('[SERVER]:' + ' Cliente ' + cliente.nombre + \
                 ' redirijido a ejecutivo ' + str(ejecutivo) + '.')
+            break
             #agregar un while mientras el ejecutivo este ocupado.
         #loop de pregunta
         conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
@@ -123,5 +142,7 @@ def ayuda(cliente,conn,self): #display de ayudas
     #return
 
 
+def chat(cliente):
 
-        
+    #comunica al cliente con el ejecutivo si este se quiere conectar con el cliente
+    pass
