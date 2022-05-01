@@ -1,10 +1,11 @@
 
 class Solicitud:
+    historial = []
     def __init__(self, ident,subject, state = True):
         self.ident = ident #id de solicitud
         self.state = state #estado de la solicitud
         self.subject = subject # asunto de la solicitud
-
+        
     #borra la el historial de solicitudes
 
 
@@ -22,7 +23,11 @@ class Solicitud:
 
     def cerrar(state):
         state = False
-        
+    
+    def agregar_historial(self,text):
+        global historial
+        historial.append(text)
+
 
 
 
@@ -39,7 +44,7 @@ class Cliente:
     
     global solicitudes
     
-    ejecutivo = 'nombre ejecutivo'
+    ejecutivo_asociado = 'nombre ejecutivo'
     solicitudes = [] #lista que contendra objetos de tipo solicitud
 
 
@@ -55,4 +60,12 @@ class Cliente:
         global solicitudes
         solicitudes.append(solicitud)
     
-    
+
+
+class Ejecutivo:
+    def __init__(self,nombre,rut,ejecutivo = ''):
+        
+        self.nombre= nombre
+        self.rut = rut
+         
+        
