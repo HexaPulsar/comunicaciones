@@ -22,8 +22,6 @@ esperando_ejecutivo = [] #guarda objetos cliente
 connections = [] #almacena objetos thread
 total_connections = 0
 online = 0 #lleva el conteo de personas que se encuentran online en el momento 
-
- 
 mutex.release()
 
 
@@ -32,7 +30,14 @@ mutex.release()
 
 #inicio codigo servidor
 
- 
+#cargar base de datos
+
+def cargar():
+    pass
+
+
+
+
 class Client_thread(threading.Thread):
     def __init__(self, socket, address, id, name, signal):
         threading.Thread.__init__(self)

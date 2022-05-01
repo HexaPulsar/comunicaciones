@@ -1,4 +1,3 @@
- 
 from clases import *
 
 #print(dic['204443092'].solicitudes_anteriores())
@@ -53,11 +52,6 @@ def ejecutivo(conn,connections,total_conections,self,esperando_ejecutivo):
             conn.sendall(bytes("ese no es un comando valido, intente denuevo", 'utf-8'))
         comando_ejecutivo = conn.recv(1024).decode('utf-8')
     return    
-
-
-
-
-
 
 def ayuda(cliente,conn,self,id_online): #display de ayudas
     
@@ -135,7 +129,6 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
     self.socket.close()
     return 0
     #return
-
 
 def chat(cliente):
 

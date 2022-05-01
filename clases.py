@@ -1,5 +1,6 @@
-
-class Solicitud:
+import json
+class Solicitud: 
+    global historial
     historial = []
     def __init__(self, ident,subject, state = True):
         self.ident = ident #id de solicitud
@@ -8,64 +9,79 @@ class Solicitud:
         
     #borra la el historial de solicitudes
 
-
-        #permite ver el estado de una solicitud
-    def get_state(self):
-        if self.state == True:
-            print('ABIERTO')
-            return True
-        else:
-            print('CERRADO')
-            return False
-
-    def abrir(state):
-        state = True
-
-    def cerrar(state):
-        state = False
-    
-    def agregar_historial(self,text):
+    def __iter__(self):
         global historial
-        historial.append(text)
+        yield from {
+            "ident": self.ident,
+            "state": self.state,
+            "subject": self.subject,
+            "historial" : str(historial),
+        }.items()
 
+
+    def __str__(self):
+        return json.dumps(dict(self), ensure_ascii=False)
+
+    def to_json(self):
+        return self.__str__()
+    
 
 
 
 class Cliente:
+     
    #la clase cliente crea un objecto cliente. Tiene un nombre (del cliente) un rut (del cliente)
     # y el nombre del ejecutivo. Cada objecto clase tiene una lista donde se almacenan
     #las solicitudes, que a su vez son objectos de tipo solicitud
-    def __init__(self,nombre,rut,ejecutivo = ''):
-        
+    def __init__(self,nombre,rut): 
         self.nombre= nombre
         self.rut = rut
-        self.ejecutivo = ejecutivo
-        
-    
-    global solicitudes
-    
-    ejecutivo_asociado = 'nombre ejecutivo'
-    solicitudes = [] #lista que contendra objetos de tipo solicitud
+        self.ejecutivo = ''
+        self.solicitudes = []
+          
 
+    def __iter__(self):  
+        yield from {
+            "nombre": self.nombre,
+            "rut": self.rut,
+            "ejecutivo": self.ejecutivo,
+            "solicitudes" : self.solicitudes,
+        }.items()
+
+    def __str__(self):
+        return json.dumps(dict(self), ensure_ascii=False)
+
+    def to_json(self):
+        return self.__str__()
+    
+    def agregar_solicitud(self,solicitud):
+        self.solicitudes.append(solicitud.to_json())
 
     def solicitudes_anteriores(self):
-        global solicitudes
-        return solicitudes
+         
+        return self.solicitudes
     
-    def restart(self):
-        global solicitudes
-        solicitudes = []
+    def restart(self): 
+        self.solicitudes = []
 
     def ingresar_solicitud(self,solicitud):
-        global solicitudes
-        solicitudes.append(solicitud)
-    
-
-
-class Ejecutivo:
-    def __init__(self,nombre,rut,ejecutivo = ''):
-        
-        self.nombre= nombre
-        self.rut = rut
          
-        
+        self.solicitudes.append(solicitud)
+    
+class Ejecutivo:
+
+    def __init__(self,nombre,rut): 
+        self.nombre= nombre
+        self.rut = rut   
+
+    def __iter__(self):  
+        yield from {
+            "nombre": self.nombre,
+            "rut": self.rut,
+        }.items()
+
+    def __str__(self):
+        return json.dumps(dict(self), ensure_ascii=False)
+
+    def to_json(self):
+        return self.__str__()
