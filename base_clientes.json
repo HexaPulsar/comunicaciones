@@ -1,0 +1,20 @@
+{
+    "database": [
+        {
+            "nombre": "Magdalena De La Fuente",
+            "rut": "204443092",
+            "solicitudes": [
+                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"97\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
+                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"98\",\n    \"state\": true,\n    \"subject\": \"erai\"\n}"
+            ]
+        },
+        {
+            "nombre": "melanie fernandez",
+            "rut": "10101010",
+            "solicitudes": [
+                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"99\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
+                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"100\",\n    \"state\": true,\n    \"subject\": \"erai\"\n}"
+            ]
+        }
+    ]
+}

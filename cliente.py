@@ -41,7 +41,7 @@ def iniciarsocket():
     # receiveThread.start() lo inicializa
     receiveThread = threading.Thread(target = receive, args = (s, True))
     receiveThread.start()
-   
+    
     #esta funcion es un loop para enviar mensajes a través de la conexion
     while active_thread == True: 
         message = input()

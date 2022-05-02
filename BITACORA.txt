@@ -7,3 +7,15 @@ wea donde esta el server cliente que sacque de internet
 
 https://github.com/pricheal/python-client-server/blob/master/client.py
 
+
+
+
+wea de las clases pa que se hiciera json 
+https://changsin.medium.com/how-to-serialize-a-class-object-to-json-in-python-849697a0cd3
+
+vesrion mas simple que termine usando 
+
+https://stackoverflow.com/questions/3768895/how-to-make-a-class-json-serializable
+
+escribir
+https://stackoverflow.com/questions/66507254/json-dump-doesnt-dump-anything-and-leaves-me-with-an-empty-file-python
