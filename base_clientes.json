@@ -1,0 +1,22 @@
+{
+    "database": [
+        {
+            "ejecutivo": "",
+            "nombre": "Magdalena De La Fuente",
+            "rut": "204443092",
+            "solicitudes": [
+                "{\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
+                "{\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"erai\"\n}"
+            ]
+        },
+        {
+            "ejecutivo": "",
+            "nombre": "melanie fernandez",
+            "rut": "10101010",
+            "solicitudes": [
+                "{\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
+                "{\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"erai\"\n}"
+            ]
+        }
+    ]
+}

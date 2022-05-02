@@ -2,16 +2,20 @@ import socket
 from funcionalidad import *
 from clases import *
 import threading
-from bases import c1,e1
-####MUTEX SECTION
+from base import abrir_base_clientes, abrir_base_ejecutivos,cerrar_base_clientes
+
+
+#
+print('inicializando servidor')
+print('importando base...')
 
 
 mutex = threading.Lock()
 mutex.acquire()
-dic_clientes = {c1.rut: c1}
-#dic_clientes = {"204443092": Cliente("Magdalena De La Fuente","20.444.309-2")} #base de clientes
-dic_ejecutivos = {e1.rut:e1} #base de ejecutivos
+dic_clientes = {}
 
+dic_ejecutivos = {}
+ 
 nsolicitud = 0 #trackea las solicitudes 
 
 id_online = [] #revisar si hay un mismo rut conectado dos o mas veces
@@ -22,18 +26,24 @@ esperando_ejecutivo = [] #guarda objetos cliente
 connections = [] #almacena objetos thread
 total_connections = 0
 online = 0 #lleva el conteo de personas que se encuentran online en el momento 
+
 mutex.release()
 
 
-
-
+abrir_base_clientes(dic_clientes)
+abrir_base_ejecutivos(dic_ejecutivos)
+#print(dic_ejecutivos)
+#print(dic_clientes)
+####MUTEX SECTION
 
 #inicio codigo servidor
+
 
 #cargar base de datos
 
 def cargar():
     pass
+
 
 
 
@@ -69,15 +79,12 @@ class Client_thread(threading.Thread):
                 self.signal = False 
                 connections.remove(self)
                 break
-            
-
 
             if data != "":
                 datas = data.decode('utf-8')
                 
                 if str(datas) in id_online:
                     self.socket.sendall(bytes('Usted ya esta conectado en otra sesión, cierre esa sesión he intente denuevo\n','utf-8'))
-                    
                     self.socket.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))#bienvenida
                     
                     continue
@@ -92,7 +99,7 @@ class Client_thread(threading.Thread):
                 elif str(datas) in dic_ejecutivos.keys():
                     id_online.append(str(datas))
                     self.id = str(datas)  
-                    ejecutivo(self.socket, connections, total_connections,self,esperando_ejecutivo)
+                    ejecutivos(self.socket, connections, total_connections,self,esperando_ejecutivo)
                     return
 
                     
@@ -152,3 +159,8 @@ def main():
     online = online + 1
     
 main()
+
+
+#print('cerrando base de datos')
+#cerrar_base()
+#print('cerrando servidor')

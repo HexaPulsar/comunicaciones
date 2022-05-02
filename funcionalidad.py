@@ -5,9 +5,9 @@ from clases import *
 
 #este modulo tendrá las funciones con las que interactua el cliente 
  
-def ejecutivo(conn,connections,total_conections,self,esperando_ejecutivo):
+def ejecutivos(conn,connections,total_conections,self,esperando_ejecutivo):
     
-    print('[SERVER]: ' + "ejecutivo " + ejecutivo.nombre + " conectado")
+    print('[SERVER]: ' + "ejecutivo " + 'ejecutivo.nombre' + " conectado")
     conn.sendall(bytes("hay " + str(len(connections)-1) + " clientes online" + "\n" \
                     +   'ingrese un comando valido' + "\n", 'utf-8'))
     #conn.sendall(bytes('Los siguientes clientes han solicitado conectarse: '))
@@ -105,7 +105,7 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
             conn.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(len(esperando_ejecutivo))+ " en la fila.",'utf-8'))
             
             print('[SERVER]:' + ' Cliente ' + cliente.nombre + \
-                ' redirijido a ejecutivo ' + str(ejecutivo) + '.')
+                ' redirijido a ejecutivo ' + str('ejecutivo') + '.')
             chat(cliente)
             break
 
@@ -120,7 +120,7 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
         (4) Salir",'utf-8'))
 
         num = int(conn.recv(1024).decode('utf-8'))
-
+    
     temp= cliente.rut.replace('.','')
     temp = temp.replace('-','')
     id_online.remove(temp)
