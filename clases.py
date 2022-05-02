@@ -1,6 +1,6 @@
  
 import json
- 
+
 class Solicitud: 
     global historial
     historial = []
@@ -8,7 +8,7 @@ class Solicitud:
         self.ident = ident #id de solicitud
         self.state = state #estado de la solicitud
         self.subject = subject # asunto de la solicitud
-        
+        self.antecedentes = ''
     #borra la el historial de solicitudes
 
     def to_json(self):
@@ -26,26 +26,25 @@ class Cliente:
     def __init__(self,nombre,rut): 
         self.nombre= nombre
         self.rut = rut
-        self.ejecutivo = ''
         self.solicitudes = []
         
-    
-    def agregar_solicitud(self,solicitud):
-        self.solicitudes = (solicitud.to_json())
-        
+ 
     def restart(self): 
         self.solicitudes = []
 
-    def ingresar_solicitud(self,solicitud):
+    def ingresar_solicitud(self,solicitud): #esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
          
+        self.solicitudes.append(solicitud.to_json())
+
+    def nueva_solicitud(self,solicitud):#esta funcion es en run time y agrega una nueva solicitud a la lista de solicitudes de un objeto cliente en particular.
         self.solicitudes.append(solicitud)
+
     def mostrar_cliente(self):
         print('nombre: ' + self.nombre)
-        print('rut:  '+ self.rut)
-        print('ejecutivo:  ' + self.ejecutivo)
+        print('rut:  '+ self.rut) 
         print('solicitudes:  '+ str(self.solicitudes))
         print('\n\n\n')
-
+    
 
 
 class Ejecutivo:
@@ -64,11 +63,12 @@ class base:
         self.database = []
     
     def ingresarc(self,cliente):
-        self.database.append(cliente)
-        #print(self.diccionario[str(cliente.rut)])
+        self.database.append(cliente) 
+
     def ingresare(self,ejecutivo):
-        self.database.append(ejecutivo)
-        #print(self.diccionario[str(cliente.rut)])
+        self.database.append(ejecutivo) 
+
+
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
         sort_keys=True, indent=4)

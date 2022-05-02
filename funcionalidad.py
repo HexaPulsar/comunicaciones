@@ -1,9 +1,7 @@
 from clases import *
+ 
+#este modulo tendrá las funciones con las que interactua el cliente y con el ejecutivo en el thread
 
-#print(dic['204443092'].solicitudes_anteriores())
-#####
-
-#este modulo tendrá las funciones con las que interactua el cliente 
  
 def ejecutivos(conn,connections,total_conections,self,esperando_ejecutivo):
     
@@ -51,9 +49,9 @@ def ejecutivos(conn,connections,total_conections,self,esperando_ejecutivo):
         else:
             conn.sendall(bytes("ese no es un comando valido, intente denuevo", 'utf-8'))
         comando_ejecutivo = conn.recv(1024).decode('utf-8')
-    return    
+    
 
-def ayuda(cliente,conn,self,id_online): #display de ayudas
+def ayuda(cliente,conn,self): #display de ayudas
     
     print('[SERVER]: ' + cliente.nombre + " conectado")
     conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
@@ -71,49 +69,56 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
         if num == 1: 
              
             if len(cliente.solicitudes) == 0:
-                conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n \n Usted no tiene solicitudes previas" + '\n', 'utf-8'))
-                return
-
+                conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n\nUsted no tiene solicitudes previas" + '\n', 'utf-8'))
+                
             else:
-                solicitudes = cliente.solicitudes
-                print(solicitudes)
+                solicitudes = cliente.solicitudes 
                 conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n" , 'utf-8'))
                 cont = 1
                 for i in solicitudes:
-                    print(i.state)
+                    
                     if i.state == True:
                         conn.sendall(bytes(str(cont) + ') ' + str(i.subject) + '\n','utf-8'))
                         cont = cont +1
                     else:
-                        continue
-                conn.sendall(bytes("\n" , 'utf-8'))
-                conn.sendall(bytes('elija una solicitud para saber más', 'utf-8'))
+                        continue 
+                conn.sendall(bytes('\n elija una solicitud para saber más', 'utf-8'))
                 solnum = conn.recv(1024).decode('utf-8')
                 while int(solnum) not in [1,len(solicitudes)]:
                     conn.sendall(bytes('ese número no esta en la lista, elija otro número','utf-8'))
                     solnum = conn.recv(1024).decode('utf-8')
-                
-                subject = solicitudes[int(solnum)-1].subject
-                #print(subject)
+                 
+                subject = solicitudes[int(solnum)-1].antecedentes
                 conn.sendall(bytes(subject, 'utf-8'))
         
         if num == 2:
+            s1 = Solicitud('id','reinicio de servicios')
+            s1.antecedentes = 'Su servicio no ha sido reiniciado aun, esperando a un ejecutivo\n'
+            #print(type(cliente.solicitudes))
+            if s1 in cliente.solicitudes:
+                conn.sendall(bytes("Esta solicitud se encuentra pendiente\n ",'utf-8'))
+
+            else:
+                cliente.nueva_solicitud(s1)
+                
+                conn.sendall(bytes("Se ha solicitado el reinicio del servicio\n ",'utf-8'))
+                print('[SERVER]:' + "Reinicio Servicios Cliente " + \
+                    cliente.nombre + '.')
+                print(str(cliente.solicitudes))
             
-            conn.sendall(bytes("hey!",'utf-8'))
-            
-            print('[SERVER]:' + "Reinicio Servicios Cliente " + \
-                cliente.nombre + '.')
-            break
+
         if num == 3:
+            #movilizar objeto thread a una lista de espera desde la lista que guarda los threads?
             global esperando_ejecutivo
+
             conn.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(len(esperando_ejecutivo))+ " en la fila.",'utf-8'))
             
             print('[SERVER]:' + ' Cliente ' + cliente.nombre + \
                 ' redirijido a ejecutivo ' + str('ejecutivo') + '.')
+            
+            
             chat(cliente)
-            break
-
-    
+            
             #agregar un while mientras el ejecutivo este ocupado.
         #loop de pregunta
         conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
@@ -125,9 +130,7 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
 
         num = int(conn.recv(1024).decode('utf-8'))
     
-    temp= cliente.rut.replace('.','')
-    temp = temp.replace('-','')
-    id_online.remove(temp)
+     
     conn.sendall(bytes("Gracias por contactarnos, que tenga un buen día!",'utf-8'))
     print('[SERVER]: ' + cliente.nombre + " descontectado.")
     self.socket.close()
