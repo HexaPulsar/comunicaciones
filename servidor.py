@@ -29,24 +29,14 @@ online = 0 #lleva el conteo de personas que se encuentran online en el momento
 
 mutex.release()
 
+def cargar(): #cargar base de datos
+    abrir_base_clientes(dic_clientes)
+    abrir_base_ejecutivos(dic_ejecutivos)
 
-abrir_base_clientes(dic_clientes)
-abrir_base_ejecutivos(dic_ejecutivos)
-#print(dic_ejecutivos)
+cargar()
 #print(dic_clientes)
-####MUTEX SECTION
-
+#print(dic_ejecutivos)
 #inicio codigo servidor
-
-
-#cargar base de datos
-
-def cargar():
-    pass
-
-
-
-
 
 class Client_thread(threading.Thread):
     def __init__(self, socket, address, id, name, signal):
@@ -90,7 +80,6 @@ class Client_thread(threading.Thread):
                     continue
                 
                 if str(datas) in dic_clientes.keys() :
-                    
                     id_online.append(str(datas))
                     self.id = str(datas)  
                     ayuda(dic_clientes[str(datas)],self.socket,self,id_online) #inicializa el app
@@ -102,15 +91,11 @@ class Client_thread(threading.Thread):
                     ejecutivos(self.socket, connections, total_connections,self,esperando_ejecutivo)
                     return
 
-                    
                 elif "::salir" in str(datas):
                     self.socket.close()
 
-
                 else:
                     self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido, ingrese \"::salir\" para salir", 'utf-8'))
-                
-                
                 
                 #print("ID " + str(self.id) + ": " + str(data.decode("utf-8")))
                 for client in connections:

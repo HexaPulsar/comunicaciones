@@ -69,14 +69,18 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
 
     while num != 4:
         if num == 1: 
-            if len(cliente.solicitudes_anteriores()) == 0:
+             
+            if len(cliente.solicitudes) == 0:
                 conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n \n Usted no tiene solicitudes previas" + '\n', 'utf-8'))
                 return
+
             else:
-                solicitudes = cliente.solicitudes_anteriores()
+                solicitudes = cliente.solicitudes
+                print(solicitudes)
                 conn.sendall(bytes("Usted tiene las siguientes solicitudes en curso:\n" , 'utf-8'))
                 cont = 1
                 for i in solicitudes:
+                    print(i.state)
                     if i.state == True:
                         conn.sendall(bytes(str(cont) + ') ' + str(i.subject) + '\n','utf-8'))
                         cont = cont +1
@@ -90,7 +94,7 @@ def ayuda(cliente,conn,self,id_online): #display de ayudas
                     solnum = conn.recv(1024).decode('utf-8')
                 
                 subject = solicitudes[int(solnum)-1].subject
-                print(subject)
+                #print(subject)
                 conn.sendall(bytes(subject, 'utf-8'))
         
         if num == 2:

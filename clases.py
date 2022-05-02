@@ -31,12 +31,8 @@ class Cliente:
         
     
     def agregar_solicitud(self,solicitud):
-        self.solicitudes.append(solicitud.to_json())
-
-    def solicitudes_anteriores(self):
-         
-        return self.solicitudes
-    
+        self.solicitudes = (solicitud.to_json())
+        
     def restart(self): 
         self.solicitudes = []
 
