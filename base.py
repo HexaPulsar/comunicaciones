@@ -5,20 +5,20 @@ from time import sleep
  
 def base_inicial():
     c1 = Cliente("Magdalena De La Fuente","204443092")
-    s1 = Solicitud('01','cambio de clave wifi')
+    s1 = Solicitud('97','cambio de clave wifi')
     s1.antecedentes = 'tu nueva clave es JIJIJAJA'
-    s2 = Solicitud('02','erai')
+    s2 = Solicitud('98','cancelacion de plan de datos')
     s2.antecedentes = 'mama ven a buscarme'
     c1.ingresar_solicitud(s1)
     c1.ingresar_solicitud(s2)
 
-    c2 = Cliente('melanie fernandez', '10101010')
-    ss1 = Solicitud('01','cambio de clave wifi')
-    ss2 = Solicitud('02','erai')
+    c2 = Cliente('Melanie Fernandez', '10101010')
+    ss1 = Solicitud('99','actualizacion de plan de internet')
+    ss2 = Solicitud('100','cambio de clave wifi')
     c2.ingresar_solicitud(ss1)
     c2.ingresar_solicitud(ss2)
 
-    e1 = Ejecutivo("jesus christ",'10101010')	
+    e1 = Ejecutivo("NOMBRE EJECUTIVO",'00000000')	
  
     basec = base()
     basec.ingresarc(c1)
@@ -48,11 +48,13 @@ def abrir_base_clientes(dic_clientes):
             c = Cliente(diccionario['nombre'],diccionario['rut'])
             c.solicitudes = diccionario['solicitudes']
             salida = []
+            c.ejecutivo = diccionario['ejecutivo']
             for i in c.solicitudes:
                 temp = json.loads(i)
                 s = Solicitud(temp['ident'],temp['subject'])
                 s.state = temp['state']
                 s.antecedentes = temp['antecedentes']
+                
                 salida.append(s)
             c.solicitudes = salida
             return c

@@ -24,7 +24,8 @@ def iniciarsocket():
                 active_thread = False 
                 print("You have been disconnected from the server")
                 break
-        return
+        sys.exit(0)
+        
               
     try:#crea socket e intenta conectarse
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -46,8 +47,7 @@ def iniciarsocket():
     while active_thread == True: 
         message = input()
         s.sendall(str.encode(message))
-    input("Press enter to quit")           
-    sys.exit(0)
+    
     
 
 

@@ -9,6 +9,7 @@ class Solicitud:
         self.state = state #estado de la solicitud
         self.subject = subject # asunto de la solicitud
         self.antecedentes = ''
+        
     #borra la el historial de solicitudes
 
     def to_json(self):
@@ -27,7 +28,7 @@ class Cliente:
         self.nombre= nombre
         self.rut = rut
         self.solicitudes = []
-        
+        self.ejecutivo = ''
  
     def restart(self): 
         self.solicitudes = []

@@ -5,7 +5,6 @@ from funcionalidad import *
 from clases import *
 from base import abrir_base_clientes, abrir_base_ejecutivos
 
-
 #
 print('inicializando servidor')
 print('importando base...')
@@ -24,15 +23,11 @@ dic_ejecutivos = {}#almacena objetos de tipo ejecutivo con el rut del ejecutivo 
 nsolicitud = 0 #trackea las solicitudes 
 
 onlinebyid = [] #revisar si hay un mismo rut conectado dos o mas veces
-
-
-
 #Variables for holding information about connections
+
 connections = [] #almacena objetos thread
 esperando_ejecutivo = [] #aquellos threads (clientes) que estén esperando a ser conectados a un cliente se movilizan hacia esperando_ejecutivo
-total_connections = 0
-online = 0 #lleva el conteo de personas que se encuentran online en el momento 
-
+total_connections = 0 
 mutex.release()
 
 
@@ -41,6 +36,7 @@ cargar()
 #inicio codigo servidor
 
 class Client_thread(threading.Thread):
+    
     global onlinebyid
     #la clase cliente facilita el desplegamiento de un thread (el thread atiende al cliente)
     def __init__(self, socket, address, id, name, signal):
@@ -50,9 +46,9 @@ class Client_thread(threading.Thread):
         self.id = id #identificador de la conexion
         self.name = name #nombre de la conexion
         self.signal = signal #señala si la conexion esta activa
-        print(self.name)
+        
     def __str__(self):
-        return str(self.id) + " " + str(self.address)
+        return str(self.id) + " " + str(self.address) 
      
     
     #funcion run es el punto de partida del objeto thread que se creo
@@ -64,29 +60,45 @@ class Client_thread(threading.Thread):
         global online 
         
         if self.name in onlinebyid: #si el identificador que ingresa  el usuario  (rut) ya esta en la lista de clientes conectados
-            self.socket.sendall(bytes('Usted ya esta conectado en otra sesión, cierre esa sesión he intente denuevo\n','utf-8')) #mensaje de doble sesion activa
-            self.socket.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))# mensaje de bienvenida bienvenida
-        
+            data = self.name
+            while data in onlinebyid:
+                self.socket.sendall(bytes('Usted ya esta conectado en otra sesión\nCierre esa sesión he intente denuevo\nIngrese \'::salir\' para terminar la sesión \n','utf-8')) #mensaje de doble sesion activa
+                self.socket.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))# mensaje de bienvenida bienvenida
+                data = self.socket.recv(1024).decode('utf-8')
+                if "::salir" in data:
+                    self.socket.close()
+                    connections.remove(self)
+                    #onlinebyid.remove(self.id)
+                    return 0
+
         while self.signal: #mientras haya señal, recibir. Si no hay señal, entonces el cliente se ha desconectado
             
             if self.name in dic_clientes.keys() : #si el identificador que ingresa el usuario  (rut) esta en el diccionario de clientes, activar la funcion de ayuda que despliega el menu
-                    online = online + 1
+                     
                     onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                     
                     self.id = self.name  #asigna el rut como identificador del thread
-                    ayuda(dic_clientes[self.name],self.socket,self) #inicializa el app ayuda 
+                    ayuda(dic_clientes[self.name],self.socket, connections,esperando_ejecutivo) #inicializa el app ayuda 
                      
                     onlinebyid.remove(self.name)
-                    online = online -1
+                     
+                    self.socket.close()
+                    print('[SERVER]: ' +  str(dic_clientes[str(self.name)].nombre) + " descontectado.")
                     break
                     
             elif self.name in dic_ejecutivos.keys(): #si el identificador que ingreso el usuario (rut) esta en el diccionario de ejecutivos, abre el menu para ejecutivos
-                online = online + 1
+                 
                 onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                 self.id = self.name #asigna el rut como identificador del thread
-                ejecutivos(self.socket, connections, total_connections,self,esperando_ejecutivo) #inicializa el app de ejecutivo
+                
+                print('[SERVER]: ' + "ejecutivo " + 'ejecutivo.nombre' + " conectado")
+                
+                
+                ejecutivos(self.socket, connections, total_connections,self,esperando_ejecutivo,dic_clientes,dic_ejecutivos) #inicializa el app de ejecutivo
                 onlinebyid.remove(self.name)
-                online = online -1
+                 
+                self.socket.close()
+                print("[SERVER]: Ejecutivo: "   + str(dic_ejecutivos[str(self.name)].nombre) + " desconectado")
                 break 
 
             elif "::salir" in self.name: 
@@ -108,9 +120,11 @@ class Client_thread(threading.Thread):
                 self.signal = False 
                 connections.remove(self)
                 break
-            
-        connections.remove(self)
-        #onlinebyid.remove(self.id)
+        
+        if self in connections:
+            connections.remove(self)
+        else:
+            esperando_ejecutivo.remove(self) 
         return 0
                  
 
@@ -126,6 +140,8 @@ def newConnections(socket):
 
         sock.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))
         name = str(sock.recv(1024).decode('utf-8'))
+
+        #inicializa un objeto thread que será identificado por el rut que se entrega en el cliente
         connections.append(Client_thread(sock, address, total_connections, \
              name, True)) #connections es una lista que almacena los objetos threads
         
@@ -138,7 +154,7 @@ def newConnections(socket):
 def main():
     #esta funcion hace dos cosas: el main se queda escuchando
     #si recibe un request inicia un thread para servirle
-    global online
+     
     host = '127.0.0.1'
     port = 8000
 
@@ -150,14 +166,9 @@ def main():
     #levanta el thread de nueva conección, el main se queda escuchando
     #se crea un objeto thread y se inicializa
     newConnectionsThread = threading.Thread(target = newConnections, args = (sock,)) #crea un objecto thread
-    newConnectionsThread.start() #inicializa el thread
-    
-     #suma a la variable que contabiliza los usuarios online
+    newConnectionsThread.start() #inicializa el thread 
     
 main()
- 
- 
-
 #print('cerrando base de datos')
 #cerrar_base()
 #print('cerrando servidor')
