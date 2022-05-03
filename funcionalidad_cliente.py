@@ -7,7 +7,6 @@ from time import sleep
 #####################FUNCIONALIDAD DE CLIENTE###################################
 ################################################################################
 def ayuda(cliente,conn,connections,esperando_ejecutivo,self): #display de ayudas
-    
     print('[SERVER]: ' + cliente.nombre + " conectado")
     conn.sendall(bytes("Hola" + " " + str(cliente.nombre) + \
         ", en qué te podemos ayudar? \n \
@@ -15,11 +14,10 @@ def ayuda(cliente,conn,connections,esperando_ejecutivo,self): #display de ayudas
         (2) Reiniciar servicios \n \
         (3) Contactar a un ejecutivo \n \
         (4) Salir",'utf-8'))
-    
-    #escuchar numero
+        
     num = int(conn.recv(1024).decode('utf-8'))
     while num >4 or num <1:
-        conn.sendall(bytes('elija un número válido\n','utf-8'))
+        conn.sendall(bytes('Elija un número válido\n','utf-8'))
         num = int(conn.recv(1024).decode('utf-8'))
     while num != 4:#loop de pregunta, si la respuesta no es 4 no sale del while
         if num == 1: 
@@ -61,18 +59,13 @@ def ayuda(cliente,conn,connections,esperando_ejecutivo,self): #display de ayudas
                 #print(str(cliente.solicitudes))
         if num == 3:
             #movilizar objeto thread a una lista de espera desde la lista que guarda los threads?
-            
             for i in connections: #busca el thread correspondiente en connections, luego lo cambia a la lista de threads que estan esperando un ejecutivo
                 if i.name == cliente.rut:
                     esperando_ejecutivo.append(i)
-                    
                     connections.remove(i)
             def chatear():
-                
                 conn.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(len(esperando_ejecutivo))+ " en la fila.",'utf-8'))
                 conn.sendall(bytes('Espere a ser atendido, no se desconecte *suena musiquita de ascensor* \n','utf-8'))
-                
-                
                 while  self.chat == False:
                     sleep(1) #espera 300 segundos antes de recordar que no se desconecte
                     #conn.sendall(bytes('Espere a ser atendido, no se desconecte *suena musiquita de ascensor* ','utf-8'))

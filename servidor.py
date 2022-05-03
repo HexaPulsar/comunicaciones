@@ -78,7 +78,7 @@ class Client_thread(threading.Thread):
                 onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                 self.id = self.name #asigna el rut como identificador del thread
                 
-                print('[SERVER]: ' + "ejecutivo " + 'ejecutivo.nombre' + " conectado")
+                print('[SERVER]: ' + "ejecutivo " + dic_ejecutivos[(self.name)].nombre + " conectado")
                 ejecutivos(self.socket, connections, total_connections,self,esperando_ejecutivo,dic_clientes,dic_ejecutivos) #inicializa el app de ejecutivo
                 onlinebyid.remove(self.name)
                  
@@ -107,7 +107,7 @@ class Client_thread(threading.Thread):
         
         if self in connections: #elimina el objecto thread cuando no se esta usando más
             connections.remove(self)
-        elif self in esperando_ejecutivo(self):
+        elif self in esperando_ejecutivo:
             esperando_ejecutivo.remove(self) 
         return 0
                  
