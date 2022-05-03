@@ -1,8 +1,9 @@
-import json
-import threading
-from clases import *
-from time import sleep
  
+from clases import * 
+
+
+
+#Con este script se creo la base de datos original. Es irrelevante en realidad
 def base_inicial():
     c1 = Cliente("Magdalena De La Fuente","204443092")
     s1 = Solicitud('97','cambio de clave wifi')
