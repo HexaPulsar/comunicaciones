@@ -1,9 +1,11 @@
 from multiprocessing.connection import wait
 import socket
 import threading 
-from funcionalidad import *
+
+from funcionalidad_ejecutivo import *
+from funcionalidad_cliente import *
 from clases import * 
- 
+
 
 
 def cargar(): #cargar base de datos
@@ -40,7 +42,7 @@ class Client_thread(threading.Thread):
         self.id = id #identificador de la conexion
         self.name = name #nombre de la conexion
         self.signal = signal #señala si la conexion esta activa
-    
+        self.chat = False
     #funcion run es el punto de partida del objeto thread que se creo
     #esta funcion se gatilla haciendo .start()
     def run(self):
@@ -63,7 +65,7 @@ class Client_thread(threading.Thread):
                     onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                     
                     self.id = self.name  #asigna el rut como identificador del thread
-                    ayuda(dic_clientes[self.name],self.socket, connections,esperando_ejecutivo) #inicializa el app ayuda 
+                    ayuda(dic_clientes[self.name],self.socket, connections,esperando_ejecutivo,self) #inicializa el app ayuda 
                      
                     onlinebyid.remove(self.name)
                      
@@ -76,9 +78,7 @@ class Client_thread(threading.Thread):
                 onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                 self.id = self.name #asigna el rut como identificador del thread
                 
-                print('[SERVER]: ' + "ejecutivo " + 'ejecutivo.nombre' + " conectado")
-                
-                
+                print('[SERVER]: ' + "ejecutivo " + dic_ejecutivos[(self.name)].nombre + " conectado")
                 ejecutivos(self.socket, connections, total_connections,self,esperando_ejecutivo,dic_clientes,dic_ejecutivos) #inicializa el app de ejecutivo
                 onlinebyid.remove(self.name)
                  
@@ -90,12 +90,12 @@ class Client_thread(threading.Thread):
                 self.socket.close()
 
             else: #si lo recibido desde el cliente no es ninguno de los anteriores se pide que reingrese un input
-                self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido, ingrese \"::salir\" para salir", 'utf-8'))
+                self.socket.sendall(bytes("Usted no es cliente, ingrese un rut válido, ingrese \"::salir\" para salir", 'utf-8'))
                 
                 for client in connections:
                     if client.id != self.id:
                         client.socket.sendall(data)
-                        
+        while True:   
             try:
                 #mensaje de bienvenida que se envia al cliente
                 data = self.socket.recv(1024)
@@ -107,7 +107,7 @@ class Client_thread(threading.Thread):
         
         if self in connections: #elimina el objecto thread cuando no se esta usando más
             connections.remove(self)
-        else:
+        elif self in esperando_ejecutivo:
             esperando_ejecutivo.remove(self) 
         return 0
                  
