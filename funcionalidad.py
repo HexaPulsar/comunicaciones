@@ -1,7 +1,63 @@
 from multiprocessing import connection
 from clases import *
-import sys
+ 
 #este modulo tendrá las funciones con las que interactua el cliente y con el ejecutivo en el thread
+
+
+def abrir_base_clientes(dic_clientes):
+     
+    def importadorc(diccionario):
+            c = Cliente(diccionario['nombre'],diccionario['rut'])
+            c.solicitudes = diccionario['solicitudes']
+            salida = []
+            c.ejecutivo = diccionario['ejecutivo']
+            for i in c.solicitudes:
+                temp = json.loads(i)
+                s = Solicitud(temp['ident'],temp['subject'])
+                s.state = temp['state']
+                s.antecedentes = temp['antecedentes']
+                
+                salida.append(s)
+            c.solicitudes = salida
+            return c
+
+    with open('base_clientes.json', 'r') as openfile:
+        json_object = json.load(openfile)
+         
+        for i in json_object['database']:
+            cliente = importadorc(i)
+            dic_clientes.update({cliente.rut:cliente})
+
+def abrir_base_ejecutivos(dic_ejecutivos):
+    def importadore(diccionario):
+            e = Ejecutivo(diccionario['nombre'],diccionario['rut'])
+            return e
+
+    with open('base_ejecutivos.json', 'r') as openfile:
+        json_object = json.load(openfile)
+        for i in json_object['database']:
+            ejecutivo = importadore(i)
+            dic_ejecutivos.update({ejecutivo.rut:ejecutivo})
+
+def finalizar_sesion(dic_clientes,dic_ejecutivos):
+    basec = base()
+    basee = base()
+    for i in dic_clientes.items():
+        basec.ingresarc(i)
+    for i in dic_ejecutivos.items():
+        basee.ingresare(i)
+
+    def cerrar_base_clientes(basec):
+        #cerrar json
+        with open("base_clientes.json", "w") as outfile:
+            outfile.write(basec.to_json())
+
+    def cerrar_base_ejecutivos(basee):
+        with open("base_ejecutivos.json", "w") as outfile:
+            outfile.write(basee.to_json())
+
+    cerrar_base_clientes(basec)
+    cerrar_base_ejecutivos(basee)
 
  
 def ejecutivos(conn,connections,total_conections,self,esperando_ejecutivo,dic_clientes,dic_ejecutivos):

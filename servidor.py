@@ -2,12 +2,9 @@ from multiprocessing.connection import wait
 import socket
 import threading 
 from funcionalidad import *
-from clases import *
-from base import abrir_base_clientes, abrir_base_ejecutivos
+from clases import * 
+ 
 
-#
-print('inicializando servidor')
-print('importando base...')
 
 def cargar(): #cargar base de datos
     abrir_base_clientes(dic_clientes)
@@ -19,26 +16,23 @@ mutex = threading.Lock()
 mutex.acquire()
 dic_clientes = {} #almacena objetos de tipo cliente con el rut del cliente como key
 dic_ejecutivos = {}#almacena objetos de tipo ejecutivo con el rut del ejecutivo como key
-
-nsolicitud = 0 #trackea las solicitudes 
-
+#trackea las solicitudes 
 onlinebyid = [] #revisar si hay un mismo rut conectado dos o mas veces
 #Variables for holding information about connections
-
 connections = [] #almacena objetos thread
 esperando_ejecutivo = [] #aquellos threads (clientes) que estén esperando a ser conectados a un cliente se movilizan hacia esperando_ejecutivo
 total_connections = 0 
 mutex.release()
 
-
-
+print('inicializando servidor')
+print('importando base...')
 cargar() 
+print('bases importadas')
 #inicio codigo servidor
 
 class Client_thread(threading.Thread):
-    
-    global onlinebyid
     #la clase cliente facilita el desplegamiento de un thread (el thread atiende al cliente)
+    global onlinebyid
     def __init__(self, socket, address, id, name, signal):
         threading.Thread.__init__(self)
         self.socket = socket # socket
@@ -46,19 +40,11 @@ class Client_thread(threading.Thread):
         self.id = id #identificador de la conexion
         self.name = name #nombre de la conexion
         self.signal = signal #señala si la conexion esta activa
-        
-    def __str__(self):
-        return str(self.id) + " " + str(self.address) 
-     
     
     #funcion run es el punto de partida del objeto thread que se creo
     #esta funcion se gatilla haciendo .start()
     def run(self):
-        #inicializa el funcionamiento del thread, corre solo por defecto, no hay que llamarla
-        global onlinebyid
-        global esperando_ejecutivo
-        global online 
-        
+        #inicializa el funcionamiento del thread, corre solo por defecto, no hay que llamarla       
         if self.name in onlinebyid: #si el identificador que ingresa  el usuario  (rut) ya esta en la lista de clientes conectados
             data = self.name
             while data in onlinebyid:
@@ -68,7 +54,6 @@ class Client_thread(threading.Thread):
                 if "::salir" in data:
                     self.socket.close()
                     connections.remove(self)
-                    #onlinebyid.remove(self.id)
                     return 0
 
         while self.signal: #mientras haya señal, recibir. Si no hay señal, entonces el cliente se ha desconectado
@@ -107,7 +92,6 @@ class Client_thread(threading.Thread):
             else: #si lo recibido desde el cliente no es ninguno de los anteriores se pide que reingrese un input
                 self.socket.sendall(bytes("Usted no es cliente,ingrese un rut válido, ingrese \"::salir\" para salir", 'utf-8'))
                 
-                #print("ID " + str(self.id) + ": " + str(data.decode("utf-8")))
                 for client in connections:
                     if client.id != self.id:
                         client.socket.sendall(data)
@@ -116,12 +100,12 @@ class Client_thread(threading.Thread):
                 #mensaje de bienvenida que se envia al cliente
                 data = self.socket.recv(1024)
             except:
-                #print("Client " + str(self.id) + " has disconnected")
+                #si el cliente se desconecta
                 self.signal = False 
                 connections.remove(self)
                 break
         
-        if self in connections:
+        if self in connections: #elimina el objecto thread cuando no se esta usando más
             connections.remove(self)
         else:
             esperando_ejecutivo.remove(self) 
@@ -136,18 +120,12 @@ def newConnections(socket):
     while True:
         sock, address = socket.accept() #acepta la conexion entrante
         global total_connections #variable global que cuenta las conexiones
-
-
         sock.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))
         name = str(sock.recv(1024).decode('utf-8'))
-
         #inicializa un objeto thread que será identificado por el rut que se entrega en el cliente
         connections.append(Client_thread(sock, address, total_connections, \
              name, True)) #connections es una lista que almacena los objetos threads
-        
         connections[len(connections) - 1].start() #inicializa el ultimo objeto thread creado
-        
-        #print("New connection at ID " + str(connections[len(connections) - 1]))
         total_connections += 1 #actualiza el numero de conecciones activas
 
 
