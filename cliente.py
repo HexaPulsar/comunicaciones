@@ -24,9 +24,7 @@ def iniciarsocket():
                 active_thread = False 
                 print("You have been disconnected from the server")
                 break
-        sys.exit(0)
-        
-              
+        sys.exit(0)      
     try:#crea socket e intenta conectarse
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((host, port))
@@ -35,21 +33,12 @@ def iniciarsocket():
         input("Press enter to quit")
         sys.exit(0)
     
-        ##entra en un loop de lectura, lee lo que llega desde el servidor
+    ##entra en un loop de lectura, lee lo que llega desde el servidor
+    receiveThread = threading.Thread(target = receive, args = (s, True))#recieveThread almacena el objeto thread creado.
+    receiveThread.start()# receiveThread.start() lo inicializa
     
-
-    #recieveThread almacena el objeto thread creado.
-    # receiveThread.start() lo inicializa
-    receiveThread = threading.Thread(target = receive, args = (s, True))
-    receiveThread.start()
-    
-    #esta funcion es un loop para enviar mensajes a través de la conexion
-    while active_thread == True: 
+    while active_thread == True: #loop para enviar mensajes a través de la conexion
         message = input()
         s.sendall(str.encode(message))
-    
-    
-
-
 #run functions
 iniciarsocket()
