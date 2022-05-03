@@ -3,7 +3,7 @@ import json
 
 class Solicitud: 
     global historial
-    historial = []
+    historial = [] #lista que almacena
     def __init__(self, ident,subject, state = True):
         self.ident = ident #id de solicitud
         self.state = state #estado de la solicitud
@@ -25,10 +25,10 @@ class Cliente:
     # y el nombre del ejecutivo. Cada objecto clase tiene una lista donde se almacenan
     #las solicitudes, que a su vez son objectos de tipo solicitud
     def __init__(self,nombre,rut): 
-        self.nombre= nombre
-        self.rut = rut
-        self.solicitudes = []
-        self.ejecutivo = ''
+        self.nombre= nombre #nombre del cliente
+        self.rut = rut #rut del cliente
+        self.solicitudes = [] #solicitudes del cliente, clase de tipo SOlicitud
+        self.ejecutivo = '' #nombre del ejecutivo asociado al cliente
  
     def restart(self): 
         self.solicitudes = []
@@ -51,25 +51,26 @@ class Cliente:
 class Ejecutivo:
 
     def __init__(self,nombre,rut): 
-        self.nombre= nombre
-        self.rut = rut   
+        self.nombre= nombre #nombre del ejecutivo
+        self.rut = rut   #rut del ejecutivo
 
-    def to_json(self):
+    def to_json(self):#esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
 
 
 class base:
+    #una clase de base de datos para armar la base incial, no trabaja en runtime, fue solo para iniciar la base
     def __init__(self):
         self.database = []
     
-    def ingresarc(self,cliente):
+    def ingresarc(self,cliente): #ingresa un cliente a la base de datos
         self.database.append(cliente) 
 
-    def ingresare(self,ejecutivo):
+    def ingresare(self,ejecutivo):#ingresa un ejecutivo a la base de datos
         self.database.append(ejecutivo) 
 
 
-    def to_json(self):
+    def to_json(self):#esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
         return json.dumps(self, default=lambda o: o.__dict__, 
         sort_keys=True, indent=4)

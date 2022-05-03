@@ -91,10 +91,7 @@ class Client_thread(threading.Thread):
 
             else: #si lo recibido desde el cliente no es ninguno de los anteriores se pide que reingrese un input
                 self.socket.sendall(bytes("Usted no es cliente, ingrese un rut válido, ingrese \"::salir\" para salir", 'utf-8'))
-                
-                for client in connections:
-                    if client.id != self.id:
-                        client.socket.sendall(data)
+
         while True:   
             try:
                 #mensaje de bienvenida que se envia al cliente
@@ -121,7 +118,9 @@ def newConnections(socket):
         sock, address = socket.accept() #acepta la conexion entrante
         global total_connections #variable global que cuenta las conexiones
         sock.sendall(bytes("Hola! Bienvenido, Ingrese su RUT (sin guion y sin punto)", 'utf-8'))
+        
         name = str(sock.recv(1024).decode('utf-8'))
+        
         #inicializa un objeto thread que será identificado por el rut que se entrega en el cliente
         connections.append(Client_thread(sock, address, total_connections, \
              name, True)) #connections es una lista que almacena los objetos threads
@@ -132,7 +131,7 @@ def newConnections(socket):
 def main():
     #esta funcion hace dos cosas: el main se queda escuchando
     #si recibe un request inicia un thread para servirle
-     
+    
     host = '127.0.0.1'
     port = 8000
 

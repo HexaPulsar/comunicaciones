@@ -1,7 +1,7 @@
 
 from clases import *
 from time import sleep
- 
+import threading
 
 ################################################################################
 #####################FUNCIONALIDAD DE CLIENTE###################################
@@ -67,7 +67,7 @@ def ayuda(cliente,conn,connections,esperando_ejecutivo,self): #display de ayudas
                 conn.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(len(esperando_ejecutivo))+ " en la fila.",'utf-8'))
                 conn.sendall(bytes('Espere a ser atendido, no se desconecte *suena musiquita de ascensor* \n','utf-8'))
                 while  self.chat == False:
-                    sleep(1) #espera 300 segundos antes de recordar que no se desconecte
+                    threading.wait(1) #espera 300 segundos antes de recordar que no se desconecte
                     #conn.sendall(bytes('Espere a ser atendido, no se desconecte *suena musiquita de ascensor* ','utf-8'))
                 self.signal = False
                 conn.sendall(bytes('Ejecutivo conectado!\n','utf-8'))
