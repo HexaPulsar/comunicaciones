@@ -9,14 +9,12 @@ from time import sleep
 #####################FUNCIONALIDAD DE EJECUTIVO###################################
 ################################################################################
 def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
-
     def chatear(thread_ejecutivo,thread_cliente):
         s_cliente = thread_cliente.socket #variable de socket de cliente para sintaxis mas clara
         s_ejecutivo = thread_ejecutivo.socket#variable de socket de ejecutivo para sintaxis mas clara
         #s_cliente.sendall(bytes('pruebas', 'utf-8'))
         thread_cliente.chat = True #despertamos thread cliente
         thread_cliente.esperar.set() #termina el wait del client-side
-        
         s_ejecutivo.sendall(bytes('-------CHAT INICIADO------\n', 'utf-8'))
         s_cliente.sendall(bytes('-------CHAT INICIADO------\n', 'utf-8'))
         s_ejecutivo.sendall(bytes('Ingrese ::salir para salir\n','utf-8'))
@@ -34,17 +32,14 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
             s_ejecutivo.sendall(bytes('Esperando respuesta del cliente...','utf-8'))
             recibido_c = s_cliente.recv(1024)
             if "::salir" in recibido_c.decode('utf-8'):
-                
                 s_ejecutivo.sendall(bytes('-------CHAT TERMINADO------\n', 'utf-8'))
                 s_cliente.sendall(bytes('-------CHAT TERMINADO------\n', 'utf-8'))
                 thread_cliente.chatear.set() #termina la espera del thread, que se pauso pues es el thread del cliente quien maneja el pin-poneo de mensajes a traves del servidor
                 break
             s_ejecutivo.sendall(recibido_c) #le envia al ejecutivo lo que imputeo el cliente
             s_cliente.sendall(bytes('Esperando la respuesta del ejecutivo...', 'utf-8')) 
-        
-       
-    def atender(cliente):
 
+    def atender(cliente):
         socket.sendall(bytes('Estas atendiendo a ' + cliente.nombre, 'utf-8')) #informa al ejecutivo a que cliente se esta atendiendo
         for j in cliente.solicitudes: #se display las solicitudes activas del cliente
             if j.state == True:
@@ -55,9 +50,7 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
         #instrucciones de ejecutivo
         socket.sendall(bytes('\nExisten los siguientes comandos:\n|::state <abrir|cerrar>|::subject<>|::history<>|::name<>|::restart|::ver|::salir|' ,'utf-8')) 
         socket.sendall(bytes('Para modificar el estado, subject, antecedentes (history), name o reiniciar servicios, ingrese el numero de solicitud seguido del comando y el nuevo input:NUMERO::COMANDO TEXTO\n','utf-8'))
-        
         comando_ejecutivo = socket.recv(1024).decode('utf-8') #comando del ejecutivo 
-        
         while comando_ejecutivo:
             if "::subject" in comando_ejecutivo: #modifica el subject de una solicitud
                 comando_ejecutivo.split() #elimina espacios extra en el input del ejecutivo
@@ -68,11 +61,9 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
                     if i.ident == solident: #busca la solicitud con ese id
                         i.subject = comando_ejecutivo #cambia el subject
                 print(i.subject)
-
             elif '::state' in comando_ejecutivo:#modifica el estado de una solicitud
                 comando_ejecutivo.split()
                 solident = comando_ejecutivo[0:2] #selecciona el numero de solicitud
-                
                 comando_ejecutivo = comando_ejecutivo[2:len(comando_ejecutivo)].replace('::state ','') #limpia el input, solo deja el input luego del comando
                 comando_ejecutivo.split()#elimina espacios extras
                 for i in cliente.solicitudes:
@@ -93,17 +84,14 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
                     if i.ident == solident:
                         ent = socket.recv(1024).decode('utf-8')
                         i.antecedentes = ent #edita antecedentes de la solicitud 
-
-                print(i.antecedentes)
-                
+                #print(i.antecedentes)
             elif "::name" in comando_ejecutivo:
                 comando_ejecutivo = comando_ejecutivo[2:len(comando_ejecutivo)].replace('::name ','')
                 comando_ejecutivo.split()
                 cliente.ejecutivo = comando_ejecutivo
                 print(cliente.ejecutivo)
             elif "::restart" in comando_ejecutivo:
-                socket.sendall(bytes('se han reestablecido los servicios para el cliente\n'))
-                
+                socket.sendall(bytes('se han reestablecido los servicios para el cliente\n'))   
             elif "::salir" in comando_ejecutivo :
                 break
             else:
@@ -111,11 +99,9 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
             socket.sendall(bytes('\nExisten los siguientes comandos:\n|::state <>|::subject<>|::history<>|::name<>|::restart|::salir|','utf-8'))
             comando_ejecutivo = socket.recv(1024).decode('utf-8')
 
-
     ##############INICIO INTERFAZ DE EJECUTIVO#############            
     socket.sendall(bytes('Bienvenido a la interfaz de Ejecutivo\n','utf-8'))
     socket.sendall(bytes("- hay " + str(len(connections)+ len(esperando_ejecutivo)-1) + " clientes online" + "\n", 'utf-8'))
-
     if len(esperando_ejecutivo) > 0:
         socket.sendall(bytes('Hay ' + str(len(esperando_ejecutivo)) + ' clientes a la espera de ser atendidos\n', 'utf-8'))
     else:
@@ -123,7 +109,6 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
     #chatear o atender
     socket.sendall(bytes('Ingrese ::chatear para hablar con un cliente en espera, ingrese ::atender para visualizar las solicitudes pendientes de los clientes\n', 'utf-8'))
     respuesta = socket.recv(1024).decode('utf-8').lower()
-
     if respuesta == '::chatear':
         socket.sendall(bytes('Los siguientes clientes han solicitado conectarse\n','utf-8'))
         cont = 1
@@ -134,7 +119,6 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
         num = socket.recv(1024).decode('utf-8')
         cliente = esperando_ejecutivo[int(num)-1]
         chatear(self,cliente)
-
     elif respuesta == '::atender':    
         for i in dic_clientes.items():
             socket.sendall(bytes("\n-------------------------------------------------\n" + i[1].nombre + ' || ' + i[1].rut + '\n', "utf-8"))

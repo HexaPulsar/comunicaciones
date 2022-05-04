@@ -40,7 +40,6 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                     solnum = socket.recv(1024).decode('utf-8')
                 subject = solicitudes[int(solnum)-1].antecedentes
                 socket.sendall(bytes(subject, 'utf-8'))
-        
         if num == 2:
             global n_solicitud
             s1 = Solicitud(n_solicitud,'reinicio de servicios')
@@ -48,7 +47,6 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
             #print(type(cliente.solicitudes))
             if s1 in cliente.solicitudes:
                 socket.sendall(bytes("Esta solicitud se encuentra pendiente\n ",'utf-8'))
-
             else:
                 cliente.nueva_solicitud(s1)
                 socket.sendall(bytes("Se ha solicitado el reinicio del servicio\n ",'utf-8'))
@@ -61,7 +59,6 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                 if i.name == cliente.rut:
                     esperando_ejecutivo.append(i)
                     connections.remove(i)
-
             def chatear(thread_cliente):
                 socket.sendall(bytes("Estamos redirigiendo a un asistente, usted está número " + str(len(esperando_ejecutivo))+ " en la fila.",'utf-8'))
                 socket.sendall(bytes('Espere a ser atendido, no se desconecte *suena musiquita de ascensor* \n','utf-8'))
@@ -69,9 +66,7 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                 socket.sendall(bytes('Ejecutivo conectado!\n','utf-8'))
                 print('[SERVER]:' + ' Cliente ' + cliente.nombre + \
                 ' redirijido a ejecutivo.')
-                
                 thread_cliente.chatear.wait(timeout = None)
-
             chatear(thread_cliente)
             esperando_ejecutivo.remove(thread_cliente)
             connections.append(thread_cliente)

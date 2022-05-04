@@ -9,18 +9,12 @@ class Solicitud:
         self.state = state #estado de la solicitud
         self.subject = subject # asunto de la solicitud
         self.antecedentes = ''
-        
     #borra la el historial de solicitudes
-
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
-    
-     
-
  
 class Cliente:
-     
    #la clase cliente crea un objecto cliente. Tiene un nombre (del cliente) un rut (del cliente)
     # y el nombre del ejecutivo. Cada objecto clase tiene una lista donde se almacenan
     #las solicitudes, que a su vez son objectos de tipo solicitud
@@ -49,7 +43,6 @@ class Cliente:
 
 
 class Ejecutivo:
-
     def __init__(self,nombre,rut): 
         self.nombre= nombre #nombre del ejecutivo
         self.rut = rut   #rut del ejecutivo
@@ -57,7 +50,6 @@ class Ejecutivo:
     def to_json(self):#esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
-
 
 class base:
     #una clase de base de datos para armar la base incial, no trabaja en runtime, fue solo para iniciar la base
@@ -69,7 +61,6 @@ class base:
 
     def ingresare(self,ejecutivo):#ingresa un ejecutivo a la base de datos
         self.database.append(ejecutivo) 
-
 
     def to_json(self):#esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
         return json.dumps(self, default=lambda o: o.__dict__, 

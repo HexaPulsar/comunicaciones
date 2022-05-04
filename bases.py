@@ -4,8 +4,6 @@ from clases import *
 from clases import * 
 #Con este script se creo la base de datos original. Es irrelevante en realidad
 def base_inicial():
-    n_solicitud = 100
-
     c1 = Cliente("Magdalena De La Fuente","204443092")
     s1 = Solicitud('97','cambio de clave wifi')
     s1.antecedentes = 'tu nueva clave es JIJIJAJA'
@@ -13,19 +11,16 @@ def base_inicial():
     s2.antecedentes = 'mama ven a buscarme'
     c1.ingresar_solicitud(s1)
     c1.ingresar_solicitud(s2)
-
     c2 = Cliente('Melanie Fernandez', '10101010')
     ss1 = Solicitud('99','actualizacion de plan de internet')
     ss2 = Solicitud('100','cambio de clave wifi')
     c2.ingresar_solicitud(ss1)
     c2.ingresar_solicitud(ss2)
-
     e1 = Ejecutivo("NOMBRE EJECUTIVO",'00000000')	
  
     basec = base()
     basec.ingresarc(c1)
     basec.ingresarc(c2)
-
     basee = base()
     basee.ingresare(e1) 
     
@@ -33,14 +28,11 @@ def base_inicial():
     #cerrar json
         with open("base_clientes.json", "w") as outfile:
             outfile.write(basec.to_json())
-
     def cerrar_base_ejecutivos(basee):
         with open("base_ejecutivos.json", "w") as outfile:
             outfile.write(basee.to_json())
-
     cerrar_base_clientes(basec)
     cerrar_base_ejecutivos(basee)
-
 base_inicial()
 
 
@@ -56,14 +48,12 @@ def abrir_base_clientes(dic_clientes):
                 s = Solicitud(temp['ident'],temp['subject'])# crea objeto de clase solicitud
                 s.state = temp['state']#asigna estado a solicitud
                 s.antecedentes = temp['antecedentes'] #asigna antecedentes a solicitud
-                
                 salida.append(s)#agrega solicitud a la lista
             c.solicitudes = salida 
             return c
 
     with open('base_clientes.json', 'r') as openfile: #abre archivo json y gatilla llas funciones de importacion de objetos
         json_object = json.load(openfile)
-         
         for i in json_object['database']:
             cliente = importadorc(i) #crea un objeto cliente y lo almacena en la variable cliente
             dic_clientes.update({cliente.rut:cliente}) #agrega el cliente al diccionario
@@ -96,7 +86,5 @@ def finalizar_sesion(dic_clientes,dic_ejecutivos):
     def cerrar_base_ejecutivos(basee):
         with open("base_ejecutivos.json", "w") as outfile:
             outfile.write(basee.to_json())#sobreescribe el archivo json de ejecutivos
-
-
     cerrar_base_clientes(basec)
     cerrar_base_ejecutivos(basee)
