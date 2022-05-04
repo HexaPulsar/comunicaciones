@@ -40,7 +40,7 @@ class Client_thread(threading.Thread):
         self.chatear = threading.Event()
     #funcion run es el punto de partida del objeto thread que se creo
     #esta funcion se gatilla haciendo .start()
-    def run(self):
+    def run(self,signal):
         while len(self.name) != 9:
             self.socket.sendall(bytes('Largo de rut no válido, intente denuevo', 'utf-8'))
             self.name = self.socket.recv(1024).decode('utf-8') 
