@@ -2,6 +2,7 @@
 import json
 
 class Solicitud: 
+    #para crear objetos de tipo solicitud que contengan toda la informacion necesaria en una solicitud
     global historial
     historial = [] #lista que almacena
     def __init__(self, ident,subject, state = True):
@@ -26,11 +27,7 @@ class Cliente:
 
     def restart(self): 
         self.solicitudes = []
-
-    def ingresar_solicitud(self,solicitud): #esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
-         
-        self.solicitudes.append(solicitud.to_json())
-
+ 
     def nueva_solicitud(self,solicitud):#esta funcion es en run time y agrega una nueva solicitud a la lista de solicitudes de un objeto cliente en particular.
         self.solicitudes.append(solicitud)
 

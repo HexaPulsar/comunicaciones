@@ -44,7 +44,7 @@ class Client_thread(threading.Thread):
     #esta funcion se gatilla haciendo .start()
     def run(self):
         while len(self.name) != 9:
-            self.socket.sendall(bytes('Largo de rut no válido, intente denuevo', 'utf-8'))
+            self.socket.sendall(bytes('Largo de rut no válido, será  ', 'utf-8'))
             self.name = self.socket.recv(1024).decode('utf-8') 
         #inicializa el funcionamiento del thread, corre solo por defecto, no hay que llamarla       
         if self.name in onlinebyid: #si el identificador que ingresa  el usuario  (rut) ya esta en la lista de clientes conectados
@@ -80,7 +80,8 @@ class Client_thread(threading.Thread):
             elif "::salir" in self.name: 
                 self.socket.close()
             else: #si lo recibido desde el cliente no es ninguno de los anteriores se pide que reingrese un input
-                self.socket.sendall(bytes("Usted no es cliente, ingrese un rut válido, ingrese \"::salir\" para salir", 'utf-8'))
+                self.socket.sendall(bytes("Usted no es cliente, será desconectado.", 'utf-8'))
+                self.socket.close()
         while True:
             try:
                 #mensaje de bienvenida que se envia al cliente
