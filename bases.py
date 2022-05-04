@@ -61,8 +61,9 @@ def finalizar_sesion(dic_clientes,dic_ejecutivos):
     def cerrar_base_ejecutivos(basee):
         with open("base_ejecutivos.json", "w") as outfile:
             outfile.write(basee.to_json())#sobreescribe el archivo json de ejecutivos
+
+            
     cerrar_base_clientes(basec)
     cerrar_base_ejecutivos(basee)
-
     abrir_base_clientes(dic_clientes)
     abrir_base_ejecutivos(dic_ejecutivos)
