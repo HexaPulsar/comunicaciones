@@ -12,7 +12,7 @@
         {
             "ejecutivo": "",
             "nombre": "Melanie Fernandez",
-            "rut": "10101010",
+            "rut": "101010101",
             "solicitudes": [
                 "{\n    \"antecedentes\": \"\",\n    \"ident\": \"99\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
                 "{\n    \"antecedentes\": \"\",\n    \"ident\": \"100\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
