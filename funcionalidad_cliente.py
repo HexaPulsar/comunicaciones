@@ -33,7 +33,7 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                         cont = cont +1
                     else:
                         continue 
-                socket.sendall(bytes('\n elija una solicitud para saber más', 'utf-8'))
+                socket.sendall(bytes('\nElija una solicitud para saber más', 'utf-8'))
                 solnum = socket.recv(1024).decode('utf-8')
                 while int(solnum) not in [1,len(solicitudes)]:
                     socket.sendall(bytes('ese número no esta en la lista, elija otro número','utf-8'))
@@ -41,16 +41,16 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                 subject = solicitudes[int(solnum)-1].antecedentes
                 socket.sendall(bytes(subject, 'utf-8'))
         if num == 2:
-            global n_solicitud
-            s1 = Solicitud(n_solicitud,'reinicio de servicios')
+            n_solicitud =  int(cliente.solicitudes[-1].ident) + 1
+            s1 = Solicitud(str(n_solicitud),'Reinicio de servicios')
             s1.antecedentes = 'Su servicio no ha sido reiniciado aun, esperando a un ejecutivo\n'
             #print(type(cliente.solicitudes))
             if s1 in cliente.solicitudes:
                 socket.sendall(bytes("Esta solicitud se encuentra pendiente\n ",'utf-8'))
             else:
                 cliente.nueva_solicitud(s1)
-                socket.sendall(bytes("Se ha solicitado el reinicio del servicio\n ",'utf-8'))
-                print('[SERVER]:' + "Reinicio Servicios Cliente " + \
+                socket.sendall(bytes("Se ha solicitado el reinicio del servicio\n",'utf-8'))
+                print('[SERVER]:' + "Reinicio Servicios Cliente" + \
                     cliente.nombre + '.')
                 #print(str(cliente.solicitudes))
         if num == 3:

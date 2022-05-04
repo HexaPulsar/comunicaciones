@@ -5,17 +5,35 @@
             "nombre": "Magdalena De La Fuente",
             "rut": "204443092",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"97\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
-                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"98\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
+                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"03\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
+                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"04\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
             ]
         },
         {
             "ejecutivo": "",
             "nombre": "Melanie Fernandez",
-            "rut": "101010101",
+            "rut": "10101010",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"99\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"100\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
+                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
+                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
+            ]
+        },
+        {
+            "ejecutivo": "",
+            "nombre": "Paola Nessi",
+            "rut": "202020202",
+            "solicitudes": [
+                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
+                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
+            ]
+        },
+        {
+            "ejecutivo": "",
+            "nombre": "Kayne West",
+            "rut": "303030303",
+            "solicitudes": [
+                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
+                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
             ]
         }
     ]

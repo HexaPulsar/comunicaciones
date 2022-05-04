@@ -73,7 +73,7 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
                         elif comando_ejecutivo == 'abrir':
                             i.state = True
                         else:
-                            socket.sendall(bytes('no es un estado valido','utf-8'))
+                            socket.sendall(bytes('No es un estado valido','utf-8'))
                 print(i.state)
             elif "::history" in comando_ejecutivo: #modifica el historial/antecendetes de la solicitud.
                 comando_ejecutivo.split()
@@ -91,7 +91,7 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
                 cliente.ejecutivo = comando_ejecutivo
                 print(cliente.ejecutivo)
             elif "::restart" in comando_ejecutivo:
-                socket.sendall(bytes('se han reestablecido los servicios para el cliente\n'))   
+                socket.sendall(bytes('Se han reestablecido los servicios para el cliente\n'))   
             elif "::salir" in comando_ejecutivo :
                 break
             else:
@@ -115,7 +115,7 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
         for i in esperando_ejecutivo:
             socket.sendall(bytes( str(cont) + ') ' + dic_clientes[i.name].nombre + '\n', 'utf-8'))
             cont = cont +1 
-        socket.sendall(bytes('ingrese el numero de cliente al que se quiere conectar\n', 'utf-8'))
+        socket.sendall(bytes('Ingrese el numero de cliente al que se quiere conectar\n', 'utf-8'))
         num = socket.recv(1024).decode('utf-8')
         cliente = esperando_ejecutivo[int(num)-1]
         chatear(self,cliente)

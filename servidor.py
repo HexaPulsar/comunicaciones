@@ -67,7 +67,7 @@ class Client_thread(threading.Thread):
             elif self.name in dic_ejecutivos.keys(): #si el identificador que ingreso el usuario (rut) esta en el diccionario de ejecutivos, abre el menu para ejecutivos
                 onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                 self.id = self.name #asigna el rut como identificador del thread
-                print('[SERVER]: ' + "ejecutivo " + dic_ejecutivos[(self.name)].nombre + " conectado")
+                print('[SERVER]: ' + "Ejecutivo " + dic_ejecutivos[(self.name)].nombre + " conectado")
                 ejecutivos(self.socket, connections,self,esperando_ejecutivo,dic_clientes) #inicializa el app de ejecutivo
                 onlinebyid.remove(self.name)
                 self.socket.close()

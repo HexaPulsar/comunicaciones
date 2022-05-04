@@ -23,7 +23,7 @@ class Cliente:
         self.rut = rut #rut del cliente
         self.solicitudes = [] #solicitudes del cliente, clase de tipo SOlicitud
         self.ejecutivo = '' #nombre del ejecutivo asociado al cliente
- 
+
     def restart(self): 
         self.solicitudes = []
 
@@ -39,8 +39,6 @@ class Cliente:
         print('rut:  '+ self.rut) 
         print('solicitudes:  '+ str(self.solicitudes))
         print('\n\n\n')
-    
-
 
 class Ejecutivo:
     def __init__(self,nombre,rut): 

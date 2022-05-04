@@ -1,8 +1,12 @@
 {
     "database": [
         {
-            "nombre": "NOMBRE EJECUTIVO",
-            "rut": "000000000"
+            "nombre": "Eterlinda",
+            "rut": "505050505"
+        },
+        {
+            "nombre": "Buldrini",
+            "rut": "606060606"
         }
     ]
 }
