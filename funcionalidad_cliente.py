@@ -29,10 +29,10 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                 for i in solicitudes:
                     
                     if i.state == True:
-                        socket.sendall(bytes(str(cont) + ') ' + str(i.subject) + '\n','utf-8'))
+                        socket.sendall(bytes(str(cont) + ') ' + str(i.subject)+ '\n','utf-8'))
                         cont = cont +1
                     else:
-                        continue 
+                        continue
                 socket.sendall(bytes('\nElija una solicitud para saber más', 'utf-8'))
                 solnum = socket.recv(1024).decode('utf-8')
                 while int(solnum) not in [1,len(solicitudes)]:
@@ -41,18 +41,31 @@ def ayuda(cliente,socket,connections,esperando_ejecutivo,thread_cliente): #displ
                 subject = solicitudes[int(solnum)-1].antecedentes
                 socket.sendall(bytes(subject, 'utf-8'))
         if num == 2:
-            n_solicitud =  int(cliente.solicitudes[-1].ident) + 1
-            s1 = Solicitud(str(n_solicitud),'Reinicio de servicios')
-            s1.antecedentes = 'Su servicio no ha sido reiniciado aun, esperando a un ejecutivo\n'
-            #print(type(cliente.solicitudes))
-            if s1 in cliente.solicitudes:
-                socket.sendall(bytes("Esta solicitud se encuentra pendiente\n ",'utf-8'))
+            def buscar(listasolicitudes):
+                bool = False
+                for i in listasolicitudes:
+                    if i.subject == 'Reinicio de servicios':
+                        bool = True #esta en 
+                        break
+                return bool
+            
+            if buscar(cliente.solicitudes) != True:                       
+                n_solicitud =  int(cliente.solicitudes[-1].ident) + 1
+                s1 = Solicitud(str(n_solicitud),'Reinicio de servicios')
+                s1.antecedentes = 'Su servicio no ha sido reiniciado aun, esperando a un ejecutivo\n'
+                #print(type(cliente.solicitudes))
+                if s1 in cliente.solicitudes:
+                    socket.sendall(bytes("Esta solicitud se encuentra pendiente\n ",'utf-8'))
+                else:
+                    cliente.nueva_solicitud(s1)
+                    socket.sendall(bytes("Se ha solicitado el reinicio del servicio\n",'utf-8'))
+                    print('[SERVER]:' + "Reinicio Servicios Cliente " + cliente.nombre + '.')
+                    #print(str(cliente.solicitudes))
             else:
-                cliente.nueva_solicitud(s1)
-                socket.sendall(bytes("Se ha solicitado el reinicio del servicio\n",'utf-8'))
-                print('[SERVER]:' + "Reinicio Servicios Cliente" + \
-                    cliente.nombre + '.')
-                #print(str(cliente.solicitudes))
+                for i in cliente.solicitudes:
+                    if i.subject == 'Reinicio de servicios':
+                        i.state = True #esta en 
+                        break
         if num == 3:
             #movilizar objeto thread a una lista de espera desde la lista que guarda los threads?
             for i in connections: #busca el thread correspondiente en connections, luego lo cambia a la lista de threads que estan esperando un ejecutivo

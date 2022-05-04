@@ -1,93 +1,200 @@
 {
-    "database": [
-        {
-            "ejecutivo": "",
-            "nombre": "Magdalena De La Fuente",
-            "rut": "204443092",
-            "solicitudes": [
-                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"03\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
-                "{\n    \"antecedentes\": \"no hay moneas\",\n    \"ident\": \"04\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
-            ]
-        },
-        {
+    "database": {
+        "10101010": {
             "ejecutivo": "",
             "nombre": "Melanie Fernandez",
             "rut": "10101010",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"Tu nueva clave es abcdeafds\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
+                {
+                    "antecedentes": "Tu nueva clave es abcdeafds",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "actualizacion de plan de internet"
+                },
+                {
+                    "antecedentes": "",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                }
             ]
         },
-        {
+        "202020202": {
             "ejecutivo": "",
             "nombre": "Paola Nessi",
             "rut": "202020202",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"tu nueva clave es jutsuuu\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
-                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
+                {
+                    "antecedentes": "tu nueva clave es jutsuuu",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                },
+                {
+                    "antecedentes": "mama ven a buscarme",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cancelacion de plan de datos"
+                }
             ]
         },
-        {
+        "204443092": {
             "ejecutivo": "",
-            "nombre": "Kayne West",
-            "rut": "303030303",
+            "nombre": "Magdalena De La Fuente",
+            "rut": "204443092",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
+                {
+                    "antecedentes": "tu nueva clave es JIJIJAJA",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "Cambio de clave wifi"
+                },
+                {
+                    "antecedentes": "no hay moneas",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cancelacion de plan de datos"
+                },
+                {
+                    "antecedentes": "Su servicio no ha sido reiniciado aun, esperando a un ejecutivo\n",
+                    "ident": "3",
+                    "state": false,
+                    "subject": "Reinicio de servicios"
+                }
             ]
         },
-        {
-            "ejecutivo": "",
-            "nombre": "Tony Stark",
-            "rut": "300030003",
-            "solicitudes": [
-                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"03\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
-                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"04\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
-            ]
-        },
-        {
-            "ejecutivo": "",
-            "nombre": "Bruce Banner",
-            "rut": "707070707",
-            "solicitudes": [
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
-            ]
-        },
-        {
-            "ejecutivo": "",
-            "nombre": "Doc Oc",
-            "rut": "808080808",
-            "solicitudes": [
-                "{\n    \"antecedentes\": \"Tu nueva clave es JIJIJAJA\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
-                "{\n    \"antecedentes\": \"Mama ven a buscarme\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
-            ]
-        },
-        {
-            "ejecutivo": "",
-            "nombre": "Superman",
-            "rut": "888888888",
-            "solicitudes": [
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
-            ]
-        },{
+        "222222222": {
             "ejecutivo": "",
             "nombre": "Geralt de Rivia",
             "rut": "222222222",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"tu nueva clave es JIJIJAJA\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}",
-                "{\n    \"antecedentes\": \"mama ven a buscarme\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cancelacion de plan de datos\"\n}"
+                {
+                    "antecedentes": "tu nueva clave es JIJIJAJA",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                },
+                {
+                    "antecedentes": "mama ven a buscarme",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cancelacion de plan de datos"
+                }
             ]
         },
-        {
+        "300030003": {
+            "ejecutivo": "",
+            "nombre": "Tony Stark",
+            "rut": "300030003",
+            "solicitudes": [
+                {
+                    "antecedentes": "tu nueva clave es JIJIJAJA",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                },
+                {
+                    "antecedentes": "mama ven a buscarme",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cancelacion de plan de datos"
+                }
+            ]
+        },
+        "303030303": {
+            "ejecutivo": "",
+            "nombre": "Kayne West",
+            "rut": "303030303",
+            "solicitudes": [
+                {
+                    "antecedentes": "",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "actualizacion de plan de internet"
+                },
+                {
+                    "antecedentes": "",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                }
+            ]
+        },
+        "707070707": {
+            "ejecutivo": "",
+            "nombre": "Bruce Banner",
+            "rut": "707070707",
+            "solicitudes": [
+                {
+                    "antecedentes": "",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "actualizacion de plan de internet"
+                },
+                {
+                    "antecedentes": "",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                }
+            ]
+        },
+        "808080808": {
+            "ejecutivo": "",
+            "nombre": "Doc Oc",
+            "rut": "808080808",
+            "solicitudes": [
+                {
+                    "antecedentes": "Tu nueva clave es JIJIJAJA",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                },
+                {
+                    "antecedentes": "Mama ven a buscarme",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cancelacion de plan de datos"
+                }
+            ]
+        },
+        "888888888": {
+            "ejecutivo": "",
+            "nombre": "Superman",
+            "rut": "888888888",
+            "solicitudes": [
+                {
+                    "antecedentes": "",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "actualizacion de plan de internet"
+                },
+                {
+                    "antecedentes": "",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                }
+            ]
+        },
+        "999999999": {
             "ejecutivo": "",
             "nombre": "Mario Hugo",
             "rut": "999999999",
             "solicitudes": [
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"01\",\n    \"state\": true,\n    \"subject\": \"actualizacion de plan de internet\"\n}",
-                "{\n    \"antecedentes\": \"\",\n    \"ident\": \"02\",\n    \"state\": true,\n    \"subject\": \"cambio de clave wifi\"\n}"
+                {
+                    "antecedentes": "",
+                    "ident": "1",
+                    "state": true,
+                    "subject": "hola!"
+                },
+                {
+                    "antecedentes": "",
+                    "ident": "2",
+                    "state": true,
+                    "subject": "cambio de clave wifi"
+                }
             ]
         }
-    ]
+    }
 }

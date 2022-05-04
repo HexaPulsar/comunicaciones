@@ -1,4 +1,5 @@
 
+from bases import finalizar_sesion
 from clases import *
 from time import sleep
  
@@ -6,7 +7,7 @@ from time import sleep
 ################################################################################
 #####################FUNCIONALIDAD DE EJECUTIVO###################################
 ################################################################################
-def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
+def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes,dic_ejecutivos):
     def chatear(thread_ejecutivo,thread_cliente):
         s_cliente = thread_cliente.socket #variable de socket de cliente para sintaxis mas clara
         s_ejecutivo = thread_ejecutivo.socket#variable de socket de ejecutivo para sintaxis mas clara
@@ -47,53 +48,91 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
         socket.sendall(bytes("--------------------------------------------\n", "utf-8"))
         
         #instrucciones de ejecutivo
-        socket.sendall(bytes('\nExisten los siguientes comandos:\n|::state <abrir|cerrar>|::subject<>|::history<>|::name<>|::restart|::ver|::salir|' ,'utf-8')) 
+        socket.sendall(bytes('\nExisten los siguientes comandos:\n|::state <abrir|cerrar>|::subject <>|::history <>|::name <>|::restart|::salir|' ,'utf-8')) 
         socket.sendall(bytes('Para modificar el estado, subject, antecedentes (history), name o reiniciar servicios, ingrese el numero de solicitud seguido del comando y el nuevo input:NUMERO::COMANDO TEXTO\n','utf-8'))
         comando_ejecutivo = socket.recv(1024).decode('utf-8') #comando del ejecutivo 
         while comando_ejecutivo:
             if "::subject" in comando_ejecutivo: #modifica el subject de una solicitud
                 comando_ejecutivo.split() #elimina espacios extra en el input del ejecutivo
-                solident = comando_ejecutivo[0:2] #selecciona el numero de solicitud
-                comando_ejecutivo = comando_ejecutivo[2:len(comando_ejecutivo)].replace('::subject ','')#limpia el input, solo deja el input luego del comando
-                comando_ejecutivo.split()
-                for i in cliente.solicitudes:
-                    if i.ident == solident: #busca la solicitud con ese id
-                        i.subject = comando_ejecutivo #cambia el subject
-                print(i.subject)
-            elif '::state' in comando_ejecutivo:#modifica el estado de una solicitud
-                comando_ejecutivo.split()
-                solident = comando_ejecutivo[0:2] #selecciona el numero de solicitud
-                print(solident)
-                comando_ejecutivo = comando_ejecutivo[2:len(comando_ejecutivo)].replace('::state ','') #limpia el input, solo deja el input luego del comando
-                comando_ejecutivo.split()#elimina espacios extras
+                cont = 0
+                for i in comando_ejecutivo:
+                    if i != ':':
+                        cont = cont +1
+                    else:
+                        solident = comando_ejecutivo[0:cont]
+                        break
+                print(solident)   
+                comando_ejecutivo = comando_ejecutivo[len(solident):len(comando_ejecutivo)].replace('::subject ','') #limpia el input, solo deja el input luego del comando
+                comando_ejecutivo.split() 
                 print(comando_ejecutivo)
+                print(cliente.solicitudes)
+                for i in cliente.solicitudes:
+                    if str(i.ident) == str(solident): #busca la solicitud con ese id
+                          
+                        i.subject = comando_ejecutivo #cambia el subject
+                        break
+                print(cliente.solicitudes[0].subject)
+
+
+
+            elif '::state' in comando_ejecutivo:#modifica el estado de una solicitud
+                comando_ejecutivo.split() #elimina espacios extra en el input del ejecutivo
+                cont = 0
+                for i in comando_ejecutivo:
+                    if i != ':':
+                        cont = cont +1
+                    else:
+                        solident = comando_ejecutivo[0:cont]
+                        break 
+                comando_ejecutivo = comando_ejecutivo[len(solident):len(comando_ejecutivo)].replace('::state ','') #limpia el input, solo deja el input luego del comando
+                print(comando_ejecutivo)
+                comando_ejecutivo.split() 
+                
                 
                 for i in cliente.solicitudes:
-                    if i.ident == solident:
-                        print(i.ident)
+                    if str(i.ident) == str(solident):
+                         
                         if comando_ejecutivo == 'cerrar':
                             i.state = False
+                            break
                             print(i.state)
                         elif comando_ejecutivo == 'abrir':
                             i.state = True
+                            break
                         else:
                             socket.sendall(bytes('No es un estado valido','utf-8'))
+                        
                     
             elif "::history" in comando_ejecutivo: #modifica el historial/antecendetes de la solicitud.
-                comando_ejecutivo.split()
-                solident = str(comando_ejecutivo[0:2].split()) #selecciona el numero de solicitud
-                comando_ejecutivo = comando_ejecutivo[2:len(comando_ejecutivo)].replace('::history ','') #limpia el input, solo deja el input luego del comando
+                comando_ejecutivo.split() #elimina espacios extra en el input del ejecutivo
+                cont = 0
+                for i in comando_ejecutivo:
+                    if i != ':':
+                        cont = cont +1
+                    else:
+                        solident = comando_ejecutivo[0:cont]
+                        break
+                print(solident)   
+                comando_ejecutivo = comando_ejecutivo[len(solident):len(comando_ejecutivo)].replace('::history ','') #limpia el input, solo deja el input luego del comando
                 comando_ejecutivo.split() 
+                print(comando_ejecutivo)
                 for i in cliente.solicitudes:
                     if i.ident == solident:
                         ent = socket.recv(1024).decode('utf-8')
                         i.antecedentes = ent #edita antecedentes de la solicitud 
-                #print(i.antecedentes)
+                        break
             elif "::name" in comando_ejecutivo:
-                comando_ejecutivo = comando_ejecutivo[2:len(comando_ejecutivo)].replace('::name ','')
-                comando_ejecutivo.split()
-                cliente.ejecutivo = comando_ejecutivo
-                print(cliente.ejecutivo)
+                comando_ejecutivo.split() #elimina espacios extra en el input del ejecutivo
+                cont = 0
+                for i in comando_ejecutivo:
+                    if i != ':':
+                        cont = cont +1
+                    else:
+                        solident = comando_ejecutivo[0:cont]
+                        break
+                print(solident)   
+                comando_ejecutivo = comando_ejecutivo[len(solident):len(comando_ejecutivo)].replace('::name','') #limpia el input, solo deja el input luego del comando
+                comando_ejecutivo.split() 
             elif "::restart" in comando_ejecutivo:
                 socket.sendall(bytes('Se han reestablecido los servicios para el cliente\n'))   
             elif "::salir" in comando_ejecutivo :
@@ -134,11 +173,14 @@ def ejecutivos(socket,connections,self,esperando_ejecutivo,dic_clientes):
                     else:
                         pass#socket.sendall(bytes('Solicitud (' + str(j.ident) +'): ' + j.subject + ' || ESTADO: CERRADO\n','utf-8'))
                 socket.sendall(bytes("-------------------------------------------------\n", "utf-8"))
-            socket.sendall(bytes('ingrese el rut del Cliente a atender o\n','utf-8'))
+            socket.sendall(bytes('Ingrese el rut del Cliente a atender o ::salir para terminar la sesion de ejecutivo y guardar los cambios\n','utf-8'))
             cliente = socket.recv(1024).decode('utf-8')
             if "::salir" in cliente:
                 break
             cliente = dic_clientes[cliente]
             atender(cliente)
+
+    finalizar_sesion(dic_clientes,dic_ejecutivos)
     socket.sendall(bytes('Sesión de ejecutivo terminada\n', 'utf-8'))
+
     return 0

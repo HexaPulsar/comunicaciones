@@ -1,12 +1,12 @@
 {
-    "database": [
-        {
+    "database": {
+        "505050505": {
             "nombre": "Eterlinda",
             "rut": "505050505"
         },
-        {
+        "606060606": {
             "nombre": "Buldrini",
             "rut": "606060606"
         }
-    ]
+    }
 }

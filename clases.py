@@ -52,13 +52,14 @@ class Ejecutivo:
 class base:
     #una clase de base de datos para armar la base incial, no trabaja en runtime, fue solo para iniciar la base
     def __init__(self):
-        self.database = []
+        self.database = {}
     
     def ingresarc(self,cliente): #ingresa un cliente a la base de datos
-        self.database.append(cliente) 
+        #print(cliente[1])
+        self.database.update({str(cliente[0]):cliente[1]}) 
 
     def ingresare(self,ejecutivo):#ingresa un ejecutivo a la base de datos
-        self.database.append(ejecutivo) 
+        self.database.update({str(ejecutivo[0]):ejecutivo[1]}) 
 
     def to_json(self):#esta funcion ingresa en formato json las solicitudes de un cliente para armar la base de datos
         return json.dumps(self, default=lambda o: o.__dict__, 

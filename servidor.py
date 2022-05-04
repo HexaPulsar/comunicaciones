@@ -9,6 +9,8 @@ from clases import *
 def cargar(): #cargar base de datos
     abrir_base_clientes(dic_clientes)
     abrir_base_ejecutivos(dic_ejecutivos)
+
+
 mutex = threading.Lock()
 mutex.acquire()
 dic_clientes = {} #almacena objetos de tipo cliente con el rut del cliente como key
@@ -67,11 +69,13 @@ class Client_thread(threading.Thread):
             elif self.name in dic_ejecutivos.keys(): #si el identificador que ingreso el usuario (rut) esta en el diccionario de ejecutivos, abre el menu para ejecutivos
                 onlinebyid.append(self.name)#agrega el identificador a la lista de usuarios activos
                 self.id = self.name #asigna el rut como identificador del thread
+                
                 print('[SERVER]: ' + "Ejecutivo " + dic_ejecutivos[(self.name)].nombre + " conectado")
-                ejecutivos(self.socket, connections,self,esperando_ejecutivo,dic_clientes) #inicializa el app de ejecutivo
+                ejecutivos(self.socket, connections,self,esperando_ejecutivo,dic_clientes,dic_ejecutivos) #inicializa el app de ejecutivo
                 onlinebyid.remove(self.name)
                 self.socket.close()
-                print("[SERVER]: Ejecutivo: "   + str(dic_ejecutivos[str(self.name)].nombre) + " desconectado")
+                
+                print("[SERVER]: Ejecutivo: "   + str(dic_ejecutivos[self.name].nombre) + " desconectado")
                 break
             elif "::salir" in self.name: 
                 self.socket.close()
